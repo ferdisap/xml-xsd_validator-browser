@@ -21,7 +21,7 @@ This library allows you to validate XML files against complex XSD schemas that r
 ## Installation
 
 ```bash
-npm install xml-xsd_validator-browser
+npm i xml-xsd_validator-browser
 ```
 
 ## 🧰 Usage Example
