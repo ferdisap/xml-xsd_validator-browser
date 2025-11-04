@@ -10,15 +10,36 @@ import {
 /**
  * to get xml text from url.
  * @param file url or xml contents
- * @returns 
+ * @returns xml text
  */
-async function getXmlText(file: string) :Promise<string>{
-  try {
+async function getXmlText(file: string): Promise<string> {
+  if (isXmlLike(file)) {
+    return Promise.resolve(file);
+  } else {
     const fileurl = (new URL(file, window.location.href)).href;
     return fetch(fileurl).then(r => r.text())
-  } catch (error) {
-    return Promise.resolve(file);
   }
+}
+
+// function isRelativeUrl(str: string) {
+//   if (typeof str !== 'string') {
+//     return false; // Not a string, so not a URL
+//   }
+//   // Check if it starts with a protocol (http, https, //) or a common absolute path indicator
+//   if (str.startsWith('http://') || str.startsWith('https://') || str.startsWith('//') || str.startsWith('/')) {
+//     return false; // Likely an absolute URL or absolute path
+//   }
+//   // If it doesn't contain a colon (indicating a protocol) and doesn't start with a slash, it's likely relative
+//   return !str.includes(':');
+// }
+
+function isXmlLike(file: string): boolean {
+  if (typeof file !== 'string') {
+    return false; // Not a string
+  }
+  // Check for common XML elements and structure
+  return file.includes('<') && file.includes('>') &&
+    (file.includes('<?xml') || file.includes('</'));
 }
 
 /**

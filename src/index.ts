@@ -8,3 +8,9 @@ export { findRequiredSchemas } from './util/helper';
 
 // Jika kamu ingin mengekspor juga fungsionalitas validate secara langsung
 export * from './validate';
+
+export {
+  XmlDocument,
+  XsdValidator,
+  XmlValidateError
+} from 'libxml2-wasm';
