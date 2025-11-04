@@ -1,21 +1,52 @@
 {
   "name": "xml-xsd_validator-browser",
   "version": "1.0.0",
-  "main": "index.html",
+  "description": "To validate XML file by the XSD. Able to nested XSD by xs:include, xs:redefine, and xs:import which have different namespace.",
   "type": "module",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "vite",
-    "build": "vite build"
+  "main": "./dist/esm/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
   },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
+    "test": "node dist/test.js",
+    "prepare": "npm run build",
+    "docs:md": "typedoc --plugin typedoc-plugin-markdown --out docs/markdown",
+    "docs:html": "typedoc --out docs/html",
+    "docs": "npm run docs:html && npm run docs:md"
+  },
+    "keywords": [
+    "xsd",
+    "xml",
+    "typescript",
+    "schema"
+  ],
   "author": "",
-  "license": "ISC",
-  "description": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ferdisap/xml-xsd_validator-browser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ferdisap/xml-xsd_validator-browser/issues"
+  },
+  "homepage": "https://github.com/ferdisap/xml-xsd_validator-browser#readme",
   "dependencies": {
     "libxml2-wasm": "^0.6.0"
   },
   "devDependencies": {
     "@types/node": "^24.10.0",
+    "typedoc": "^0.28.14",
+    "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "^5.9.3",
     "vite": "^7.1.12"
   }

@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "outDir": "dist/cjs",
+    
+    "forceConsistentCasingInFileNames": true,
+    
+    "declaration": true,
+    "declarationDir": "dist/cjs",
+    "emitDeclarationOnly": false,
+  },
+  "include": ["src"],
+}

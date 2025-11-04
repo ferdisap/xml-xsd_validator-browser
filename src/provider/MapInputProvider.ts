@@ -12,6 +12,7 @@ type XmlInputProvider = {
 };
 
 /**
+ * Virtual file provider for libxml2-wasm. Handles in-memory XSDs.
  * When libxml2 fetch the import xsd, libxml2 will get the xsd text from this class.
  * This will avoid error Uncaught (in promise) Error: failed to load 'schema.xsd' from xs:import or other
  */

@@ -7,6 +7,12 @@ import {
   ErrorDetail,
 } from 'libxml2-wasm';
 
+/**
+ * logic validate xml toward xsd.
+ * @param fileurl url
+ * @param mainSchemaUrl url
+ * @returns 
+ */
 export function validateXmlTowardXsd(fileurl: string, mainSchemaUrl: string): Promise<null | XmlValidateError> {
   return new Promise((resolve) => {
     // 1) kumpulkan semua XSD yang mungkin dibutuhkan (rekursif atau list manual)

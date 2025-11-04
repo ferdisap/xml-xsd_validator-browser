@@ -8,7 +8,7 @@ validateXmlTowardXsd(fileurl, mainSchemaUrl)
       const name = result.name
       const stack = result.stack
       const cause = result.cause
-      const details = result.details // Array<{line, col, message}>
+      const details = result.details // Array<{line:number, col:number, message:string}>
       const message = result.message
       console.log(name)
       console.log(stack)
