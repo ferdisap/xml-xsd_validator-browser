@@ -20,7 +20,7 @@ export async function findRequiredSchemas(
       return res.text();
     })
     .then(async (text) => {
-      const regex = /<xs:(?:import|include|redefine)[^>]*schemaLocation="([^"]+)"/g;
+      const regex = /<[a-zA-Z]{2}:(?:import|include|redefine)[^>]*schemaLocation="([^"]+)"/g;
       const matches = Array.from(text.matchAll(regex));
       const base = new URL(mainSchemaUrl);
 

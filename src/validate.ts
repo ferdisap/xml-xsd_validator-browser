@@ -99,3 +99,12 @@ export function validateXmlTowardXsd(file: string, mainSchemaUrl: string): Promi
       })
   })
 }
+
+/**
+ * TBD
+ * ini akan memvalidate xml berdasarkan namespace
+ * xsi:schemaLocation may contain two xsd, eg. xsi:schemaLocation="namespace1 xsd1 namespace2 xsd2"
+ */
+export function validateXml(){
+
+}
