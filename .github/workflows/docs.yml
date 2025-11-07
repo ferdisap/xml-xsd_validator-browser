@@ -19,7 +19,7 @@ permissions:
 concurrency:
   group: "pages"
   cancel-in-progress: false
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,10 +39,14 @@ jobs:
       - name: Build documentation
         run: npm run docs
 
-      - name: Upload build output
-        uses: actions/upload-pages-artifact@v3
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
         with:
-          path: docs # hasil build docs/html dan docs/markdown ada di sini
+          source: ./
+          destination: ./_site
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
 
   deploy:
     environment:
