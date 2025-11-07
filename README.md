@@ -6,6 +6,9 @@ A lightweight **XML validator in the browser** using [`libxml2-wasm`](https://gi
 
 This library allows you to validate XML files against complex XSD schemas that reference multiple nested schemas, **without requiring network requests during validation**.
 
+Read the docs:
+- [Github] https://ferdisap.github.io/xml-xsd_validator-browser/docs/html/index
+- [Github] https://ferdisap.github.io/xml-xsd_validator-browser/docs/html/modules
 ---
 
 ## Features
