@@ -21,7 +21,7 @@ export async function validateWellForm(xmlText: string): Promise<WorkerBags> {
         errorBags.push({
           name: "XMLParseError",
           type: "form",
-          details: {
+          detail: {
             message: detail.message || err.message || "Invalid XML format",
             file: detail.file || "",
             line: detail.line?.toString() || 1,
@@ -33,7 +33,7 @@ export async function validateWellForm(xmlText: string): Promise<WorkerBags> {
         errorBags.push({
           name: "UnknownError",
           type: "form",
-          details: {
+          detail: {
             message: err?.message || String(err),
             file: "",
             line: 1,

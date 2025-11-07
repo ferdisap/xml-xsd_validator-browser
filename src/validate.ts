@@ -1,12 +1,12 @@
 // import { MapInputProvider } from "./provider/MapInputProvider";
 import { validateWellForm } from "./validateFormWell";
-import { ValidationInfo, ValidationPayload, WorkerBags, WorkerPayload, WorkerResponse, WorkerStatusDone, WorkerStatusError } from "./types";
+import { UseWorker, ValidationInfo, ValidationPayload, WorkerPayload, WorkerResponse } from "./types";
 import { validateXmlTowardXsd } from "./validateTowardXsd";
-import RunnerWorker from "./worker/runner.worker.ts?worker";
+import ValidatorWorker from "./worker/validator.worker?worker";
 
 /**
- * TBD
- * ini akan memvalidate xml berdasarkan namespace
+ * TBD, akan memvalidate xml berdasarkan namespace
+ * tidak berjalan di worker
  * xsi:schemaLocation may contain two xsd, eg. xsi:schemaLocation="namespace1 xsd1 namespace2 xsd2"
  */
 export async function validateXml(xmlText: string, mainSchemaUrl: string | null = null, stopOnFailure: boolean = true): Promise<ValidationInfo[]> {
@@ -27,119 +27,84 @@ export async function validateXml(xmlText: string, mainSchemaUrl: string | null 
     })
 }
 
-// /**
-//  * @deprecated karena tidak ada temrinatenya
-//  */
-// export async function validateXmlByWorker(xmlText: string, mainSchemaUrl: string | null = null, stopOnFailure: boolean = true): Promise<ValidationInfo[]> {
-//   return new Promise((resolve, reject) => {
-//     if (self.Worker) {
-//       const worker = new RunnerWorker();
-//       worker.onmessage = (e: MessageEvent) => {
-//         resolve(e.data);
-//       }
-//       worker.postMessage({ xmlText, mainSchemaUrl })
-//     } else {
-//       const data: ValidationInfo = {
-//         name: "WorkerRuntimeError",
-//         type: "none",
-//         details: {
-//           message: "Failed to create worker in your browser",
-//           file: "",
-//           line: 1,
-//           col: 1
-//         }
-//       }
-//       reject([data])
+// function reactiveStatus(init: string) {
+//   let value = init;
+//   let listeners: Function[] = [];
+
+//   return {
+//     get value() {
+//       return value;
+//     },
+//     set value(v) {
+//       value = v;
+//       listeners.forEach(fn => fn(v));
+//     },
+//     reset() {
+//       listeners = [];
+//     },
+//     watch(fn: Function) {
+//       listeners.push(fn);
+//     },
+//     when(predicate: Function) {
+//       return new Promise(resolve => {
+//         if (predicate(value)) resolve(value);
+//         else this.watch((v: any) => predicate(v) && resolve(v));
+//       });
 //     }
-//   })
+//   };
 // }
-
-function reactiveStatus(init:string) {
-  let value = init;
-  let listeners:Function[] = [];
-
-  return {
-    get value() {
-      return value;
-    },
-    set value(v) {
-      value = v;
-      listeners.forEach(fn => fn(v));
-    },
-    reset(){
-      listeners = [];
-    },
-    watch(fn:Function) {
-      listeners.push(fn);
-    },
-    when(predicate:Function) {
-      return new Promise(resolve => {
-        if (predicate(value)) resolve(value);
-        else this.watch((v:any) => predicate(v) && resolve(v));
-      });
-    }
-  };
-}
-
-// contoh:
+// contoh penggunaan reactiveStatus:
 // const wstatus = reactiveStatus("working");
 // let s1:any = wstatus.when(v => v !== "working").then(v => s1 = v);
 // wstatus.value = "done"; // ✅ langsung resolve
 
-export function useWorker() {
-  if (!self.Worker) {
-    return undefined;
-  }
-  const runnerWorker = new RunnerWorker();
-  // let wstatus: WorkerStatus = "done";
-  let wstatus = reactiveStatus("done");
-  const _result: WorkerBags = [];
+export function useWorker(): UseWorker {
+  const validatorWorker = new ValidatorWorker();
+  const _responses = new Map<
+    string,
+    { resolve: (res: WorkerResponse) => void; reject: (err?: any) => void }
+  >();
 
-  runnerWorker.onmessage = (e: MessageEvent<WorkerResponse>) => {
-    _result.splice(0, _result.length);
-    console.log(e.data)
-    if(e.data.status) {
-      _result.push(...(e.data as WorkerResponse).bags);
-      wstatus.value = "done";
+  validatorWorker.onmessage = (e: MessageEvent<WorkerResponse>) => {
+    const { id, status, bags } = e.data;
+    if (status) {
+      if (_responses.has(id)) {
+        const { resolve } = _responses.get(id)!;
+        resolve({ id, status, bags });
+        _responses.delete(id)
+
+      }
+    } else {
+      const { reject } = _responses.get(id)!;
+      reject({ id, status, bags });
+      _responses.delete(id)
     }
   }
 
-  // runnerWorker.onerror = (e: MessageEvent) => {
-  //   wstatus.value = "error";
-  //   _result.splice(0, _result.length);
-  // }
+  validatorWorker.onerror = function (e: ErrorEvent) {
+    throw new Error("Worker error");
+  }
 
   const terminate = () => {
-    const payload: WorkerPayload<any> = {
-      id: crypto.randomUUID(),
-      type: "terminate",
-      payload: null
-    }
-    runnerWorker.postMessage(payload);
-    runnerWorker.terminate();
+    validatorWorker.terminate();
+
   }
 
-  const validate = (xmlText: string, mainSchemaUrl: string | null, stopOnFailure: boolean = true) => {
-    wstatus.value = "working";
-    _result.splice(0, _result.length);
+  const validate = (xmlText: string, mainSchemaUrl: string | null, stopOnFailure: boolean = true): Promise<WorkerResponse> => {
+    const id = crypto.randomUUID();
 
-    const payload: WorkerPayload<ValidationPayload> = {
-      id: crypto.randomUUID(),
-      type: "validate",
-      payload: { xmlText, mainSchemaUrl }
-    }
-    runnerWorker.postMessage(payload)
+    return new Promise((resolve, reject) => {
+      _responses.set(id, {resolve, reject});
+
+      const payload: WorkerPayload<ValidationPayload> = {
+        id,
+        payload: { xmlText, mainSchemaUrl, stopOnFailure }
+      }
+      validatorWorker.postMessage(payload)
+    })
   }
 
-  const status = ():Promise<WorkerStatusDone | WorkerStatusError> => {
-    let variable;
-    return variable = wstatus.when((v:any) => v !== "working").then(v => variable = v) as Promise<WorkerStatusDone | WorkerStatusError>;
-  }
-
-  const result = () => {
-    return _result
-  }
   return {
-    status, result, validate, terminate
+    validate, terminate
   }
 }

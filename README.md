@@ -2,7 +2,7 @@
 
 # xml-xsd-validator-browser
 
-A lightweight **XML validator in the browser** using [`libxml2-wasm`](https://github.com/jameslan/libxml2-wasm) with support for **recursive XSD imports/includes/redefines** via a `MapInputProvider`.  
+A lightweight **XML validator in the browser** using [`libxml2-wasm`](https://github.com/jameslan/libxml2-wasm) with support for **recursive XSD imports/includes/redefines** via a `MapInputProvider`.
 
 This library allows you to validate XML files against complex XSD schemas that reference multiple nested schemas, **without requiring network requests during validation**.
 
@@ -27,23 +27,72 @@ npm i xml-xsd-validator-browser
 ## 🧰 Usage Example
 
 ```ts
-import { validateXmlTowardXsd } from '@/validate.ts';
+import { extractSchemaLocation, getXmlText } from "../src/util/helper";
+import { useWorker, validateXml } from "../src/validate";
 
-const fileurl = "/test/xml_file.xml";
-const mainSchemaUrl = "https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd";
-validateXmlTowardXsd(fileurl, mainSchemaUrl)
-  .then((result: any) => {
-    if (result) {
-      const name = result.name
-      const stack = result.stack
-      const cause = result.cause
-      const details = result.details // Array<{line:number, col:number, message:string}>
-      const message = result.message
-      console.log(name)
-      console.log(stack)
-      console.log(cause)
-      console.log(details)
-      console.log(message)
+// if use xml file url
+// const fileurl = "/test/xml_file.xml";
+// const xmlText = await getXmlText(fileurl);
+
+function test1() {
+  const xmlText = 
+  `<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE dmodule >
+  <dmodule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://www.purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:noNamespaceSchemaLocation="https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd"><identAndStatusSection></identAndStatusSection></dmodule>`;
+  validateXml(xmlText)
+    .catch(err => {
+      console.log(err) // returning array contains object has name:"XMLValidateError"
+    })
+}
+test1()
+
+async function test2() {
+  const xmlText = 
+  `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE dmodule >
+  <dmodule>
+    <identAndStatusSection></identAndStatusSection>
+  </dmodule>`;
+  const mainSchemaUrl = "https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd";
+
+  const { validate, terminate } = useWorker()
+  validate(xmlText, mainSchemaUrl)
+    // never get resolved if the file is valid
+    .then(response => {
+      const { id, status, bags } = response;
+      console.log(id, status, bags) // returning array contains object has name:"XMLValidateError"
+    })
+    .catch(response => {
+      console.log(response)
+      terminate()
+    })
+
+}
+test2()
+
+// expected of test1 and tes2
+/**
+[
+  {
+    name: "XMLValidateError",
+    type: "xsd",
+    detail: {
+      message: "Element 'identAndStatusSection': Missing child element(s). Expected is ( dmAddress ).\\n",
+      file: "",
+      line: 3,
+      col: 1
     }
-  })
+  },
+  {
+    name: "XMLValidateError",
+    type: "xsd",
+    detail: {
+      message: "Element 'dmodule': Missing child element(s). Expected is ( content ).\\n",
+      file: "",
+      line: 2,
+      col: 1
+    }
+  }
+]
+*/
+
 ```

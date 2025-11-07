@@ -1,8 +1,4 @@
-import { WorkerBags } from "./types";
-
-
-// let libxml: any | null = null;
-// let initError: any = null;
+import { ValidationInfo, WorkerBags } from "./types";
 
 type LibLoader = {
   libxml: any | null,
@@ -18,13 +14,16 @@ function libxml(){
   return loader.libxml;
 }
 
-export async function ensureLibxml2Loaded(): Promise<WorkerBags> {
-  // obj.fufu = "fafa";
+/**
+ * To ensure that libxml2 has loaded, to let the worker can process.
+ * @returns Promise array contains validation info or an error instance of XmlError or XmlValidateError owned by libxml2-wasm 
+ */
+export async function ensureLibxml2Loaded(): Promise<ValidationInfo[]> {
+  console.trace()
   return new Promise(async (resolve, reject) => {
     if ((loader).libxml || loader.initError) return resolve([]);
     try {
       // dynamic import to avoid bundler import shape issues
-      // throw new Error('tes erro')
       const mod = await import("libxml2-wasm");
       (loader).libxml = mod;
       return resolve([]);

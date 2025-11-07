@@ -1,67 +1,188 @@
-export type ValidationType = "xsd" | "dtd" | "form" | "none";
-export type ErrorName = "FetchError" | "XSDValidatorParseError" | "XMLParseError" | "UnknownError" | "XMLValidateError" | "ParseTimeout" | "WorkerRuntimeError" | "LibInitError" | "RegisteringProviderError";
+/**
+ * Status sederhana worker.
+ * `true` berarti xml valid, `false` berarti xml tidak valid.
+ */
+export type SimpleWorkerStatus = boolean;
 
+/**
+ * Kumpulan hasil validasi dari proses worker.
+ */
+export type WorkerBags = ValidationInfo[];
+
+/**
+ * 🔹 Struktur data yang dikirim dari worker ke thread utama.
+ */
+export type WorkerResponse = { 
+  /** ID unik (UUID) untuk payload yang sedang diproses */
+  id: PayloadId;
+
+  /** Status dari proses validasi */
+  status: ValidationResponse["status"];
+
+  /** Kumpulan hasil validasi */
+  bags: ValidationResponse["bags"];
+};
+
+/**
+ * 🔹 Payload yang dikirim ke worker untuk diproses.
+ * @template TData Data spesifik yang dikirim ke worker.
+ */
+export type WorkerPayload<TData extends Record<string, any>> = {
+  /** ID unik (UUID) payload */
+  id: PayloadId;
+
+  /** Isi data aktual yang akan diproses oleh worker */
+  payload: TData;
+};
+
+/**
+ * 🔹 Interface utama untuk menggunakan worker di sisi main thread.
+ */
+export type UseWorker = {
+  /**
+   * Jalankan proses validasi XML terhadap XSD.
+   * @param xmlText Teks XML yang akan divalidasi.
+   * @param mainSchemaUrl URL XSD utama (boleh `null`).
+   * @param stopOnFailure Jika `true`, hentikan saat error pertama ditemukan.
+   * @returns Promise yang mengembalikan hasil berupa `WorkerResponse`.
+   */
+  validate(xmlText: string, mainSchemaUrl: string | null, stopOnFailure?: boolean): Promise<WorkerResponse>;
+
+  /**
+   * Terminasi worker agar berhenti bekerja dan melepaskan resource.
+   */
+  terminate(): void;
+};
+
+/**
+ * 🔹 Jenis-jenis nama error yang mungkin muncul selama validasi XML.
+ */
+export type ErrorName =
+  | "FetchError"
+  | "XSDValidatorParseError"
+  | "XMLParseError"
+  | "UnknownError"
+  | "XMLValidateError"
+  | "ParseTimeout"
+  | "LibInitError"
+  | "RegisteringProviderError";
+
+/**
+ * 🔹 Jenis validasi XML yang sedang dilakukan.
+ */
+export type ValidationType = "xsd" | "dtd" | "form" | "none";
+
+/**
+ * 🔹 Informasi detail tentang satu hasil error atau validasi.
+ */
 export interface ValidationInfo {
+  /** Nama atau kategori error */
   name: ErrorName;
+
+  /** Jenis validasi yang dilakukan */
   type: ValidationType;
-  details: {
+
+  /** Detail pesan error dan posisi sumber */
+  detail: {
+    /** Pesan kesalahan */
     message: string;
+
+    /** Nama file atau sumber XML */
     file: string;
+
+    /** Nomor baris terjadinya error */
     line: number;
+
+    /** Nomor kolom terjadinya error */
     col: number;
   };
 }
 
+/**
+ * 🔹 Respons hasil proses validasi XML.
+ */
+export type ValidationResponse = {
+  /** Status sederhana (`true` untuk sukses, `false` untuk gagal) */
+  status: SimpleWorkerStatus;
 
-export type WorkerRequest = {
-  xmlText: string;
+  /** Daftar informasi validasi */
+  bags: WorkerBags;
 };
 
-export type SimpleWorkerStatus = boolean;
+/**
+ * 🔹 ID unik untuk payload.
+ */
+export type PayloadId = string;
 
-export type WorkerBags = ValidationInfo[];
-
-export type PayloadId = string
-export type WorkerResponse = { id:PayloadId, status: SimpleWorkerStatus; bags: WorkerBags };
-
-export type PayloadType = "validate" | "terminate";
-
+/**
+ * 🔹 Payload untuk menjalankan validasi XML terhadap XSD.
+ */
 export type ValidationPayload = {
-  xmlText: string,
-  duration?: number,
-  mainSchemaUrl?: string | null
-}
+  /** Teks XML yang akan divalidasi */
+  xmlText: string;
 
-export type WorkerPayload<TData extends Record<string, any>> = {
-  id:PayloadId
-  type: PayloadType;
-  payload: TData | null
-}
+  /** Lama waktu eksekusi (opsional) */
+  duration?: number;
 
+  /** Jika `true`, hentikan pada error pertama */
+  stopOnFailure?: boolean;
+
+  /** URL XSD utama (opsional) */
+  mainSchemaUrl?: string | null;
+};
+
+/**
+ * 🔹 Representasi satu schema XSD yang diunduh/digunakan.
+ */
 export type Schema = {
+  /** Nama atau URL file schema */
   filename: string;
-  contents: string
-}
 
+  /** Isi schema XSD dalam bentuk teks */
+  contents: string;
+};
+
+/**
+ * 🔹 Input provider untuk proses validasi XML.
+ * Menyediakan akses virtual terhadap file yang dibaca oleh `libxml2-wasm`.
+ */
 export type MapInputProvider = {
-  match(filename: string): boolean,
-  open(filename: string): number | undefined,
-  read(fd: number, buf: Uint8Array): number,
-  close(fd: number): boolean,
-  register(): any,
-  cleanup(): void,
-}
+  /**
+   * Tentukan apakah provider ini menangani file tertentu.
+   * @param filename Nama file yang ingin dicek.
+   * @returns `true` jika provider akan menangani file tersebut.
+   */
+  match(filename: string): boolean;
 
-export type WorkerStatus = "working" | "done" | "error";
+  /**
+   * Membuka file dan mengembalikan file descriptor.
+   * @param filename Nama file.
+   * @returns Nomor descriptor, atau `undefined` jika gagal.
+   */
+  open(filename: string): number | undefined;
 
-export type WorkerStatusWorking = "working";
-export type WorkerStatusDone = "done";
-export type WorkerStatusError = "error";
+  /**
+   * Membaca isi file berdasarkan descriptor.
+   * @param fd File descriptor.
+   * @param buf Buffer target pembacaan.
+   * @returns Jumlah byte yang berhasil dibaca, `-1` jika gagal.
+   */
+  read(fd: number, buf: Uint8Array): number;
 
-export type UseWorker = {
-  // status: WorkerStatus
-  status(): Promise<WorkerStatusDone | WorkerStatusError>,
-  result():WorkerBags ;
-  validate(xmlText:string, mainSchemaUrl:string|null, stopOnFailure:boolean) :Promise<ValidationInfo[]>
-  terminate():void;
-}
+  /**
+   * Menutup file descriptor.
+   * @param fd File descriptor.
+   * @returns `true` jika berhasil menutup.
+   */
+  close(fd: number): boolean;
+
+  /**
+   * Registrasi provider ini ke dalam sistem libxml2 virtual IO.
+   */
+  register(): any;
+
+  /**
+   * Bersihkan provider dari sistem libxml2.
+   */
+  cleanup(): void;
+};

@@ -1,49 +1,68 @@
-import { validateXmlTowardXsd, validateXml } from '@/validate.ts';
 import { extractSchemaLocation, getXmlText } from "../src/util/helper";
-import RunnerWorker from "../src/worker/runner.worker?worker";
-import { useWorker, validateXmlByWorker } from "../src/validate";
-import { ValidationPayload, WorkerPayload } from '../src/types';
+import { useWorker, validateXml } from "../src/validate";
 
-const fileurl = "/test/xml_file.xml";
-const xmlText = await getXmlText(fileurl);
-// const mainSchemaUrl = "https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd";
-const mainSchemaUrl = extractSchemaLocation(xmlText)
+// const fileurl = "/test/xml_file.xml";
+// const xmlText = await getXmlText(fileurl);
 
 function test1() {
-  // console.log(XmlDocument.fromString(xmlText).toString())
-  validateXml(xmlText, mainSchemaUrl)
+  const xmlText = 
+  `<?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE dmodule >
+  <dmodule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://www.purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:noNamespaceSchemaLocation="https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd">
+    <identAndStatusSection></identAndStatusSection>
+  </dmodule>`;
+  validateXml(xmlText)
     .catch(err => {
-      console.log(err)
+      console.log(err) // returning array contains object has name:"XMLValidateError"
     })
 }
 test1()
 
-function test2() {
-  const worker = new RunnerWorker();
-  worker.onmessage = (e:MessageEvent) => {
-    console.log(e.data);
-  }
-  const payload:WorkerPayload<ValidationPayload> = {
-    id: crypto.randomUUID(),
-    type: "validate",
-    payload: { xmlText, mainSchemaUrl}
-  }
-  worker.postMessage(payload)
+async function test2() {
+  const xmlText = 
+  `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE dmodule >
+  <dmodule>
+    <identAndStatusSection></identAndStatusSection>
+  </dmodule>`;
+  const mainSchemaUrl = "https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd";
+
+  const { validate, terminate } = useWorker()
+  validate(xmlText, mainSchemaUrl)
+    // never get resolved if the file is valid
+    .then(response => {
+      const { id, status, bags } = response;
+      console.log(id, status, bags) // returning array contains object has name:"XMLValidateError"
+    })
+    .catch(response => {
+      console.log(response)
+      terminate()
+    })
+
 }
 test2()
 
-async function test3() {
-  const composedWorker = useWorker()
-  if(!composedWorker) return;
-  const { status, result, validate, terminate } = composedWorker;
-
-  validate(xmlText, mainSchemaUrl);
-  status()
-  .then(st => {
-    if(st === "done"){
-      console.log(result());
-      terminate();
+// expected
+/**
+[
+  {
+    name: "XMLValidateError",
+    type: "xsd",
+    detail: {
+      message: "Element 'identAndStatusSection': Missing child element(s). Expected is ( dmAddress ).\\n",
+      file: "",
+      line: 3,
+      col: 1
     }
-  })
-}
-test3()
+  },
+  {
+    name: "XMLValidateError",
+    type: "xsd",
+    detail: {
+      message: "Element 'dmodule': Missing child element(s). Expected is ( content ).\\n",
+      file: "",
+      line: 2,
+      col: 1
+    }
+  }
+]
+*/

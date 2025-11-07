@@ -26,7 +26,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
     bags.push({
       name: "FetchError",
       type: "xsd",
-      details: {
+      detail: {
         message: "Failed to fetch xml content",
         col: 1,
         line: 1,
@@ -43,7 +43,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
     bags.push({
       name: "FetchError",
       type: "xsd",
-      details: {
+      detail: {
         message: "Failed to get schema location",
         col: 1,
         line: 1,
@@ -64,7 +64,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
     bags.push({
       name: "FetchError",
       type: "xsd",
-      details: {
+      detail: {
         message: "Failed to find required schemas",
         col: 1,
         line: 1,
@@ -85,7 +85,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
     bags.push({
       name: "RegisteringProviderError",
       type: "xsd",
-      details: {
+      detail: {
         message: "Failed to create/register provider",
         col: 1,
         line: 1,
@@ -110,7 +110,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
     bags.push({
       name: "XMLParseError",
       type: "xsd",
-      details: {
+      detail: {
         message: "Failed to create instance of Xml and Xsd document",
         col: 1,
         line: 1,
@@ -132,7 +132,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
     bags.push({
       name: "XSDValidatorParseError",
       type: "xsd",
-      details: {
+      detail: {
         message: "Failed to create Xsd validator",
         col: 1,
         line: 1,
@@ -153,7 +153,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
       bags.push({
         name: "XMLValidateError",
         type: "xsd",
-        details: {
+        detail: {
           message: d.message || "XSD Validation failed",
           file: d.file || "",
           line: d.line || 1,
