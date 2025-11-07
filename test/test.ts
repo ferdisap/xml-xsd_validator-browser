@@ -24,7 +24,8 @@ async function test2() {
   <dmodule>
     <identAndStatusSection></identAndStatusSection>
   </dmodule>`;
-  const mainSchemaUrl = "https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd";
+  // const mainSchemaUrl = "https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd";
+  const mainSchemaUrl = "http://www.s1000d.org/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd";
 
   const { validate, terminate } = useWorker()
   validate(xmlText, mainSchemaUrl)
