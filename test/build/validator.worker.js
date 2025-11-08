@@ -1,4 +1,4 @@
-// dist/esm/libxml/libxmlloader.js
+// src/libxml/libxmlloader.ts
 var loader = {
   libxml: null,
   // loadingPromise: null as Promise<void> | null,
@@ -9,8 +9,7 @@ function libxml() {
 }
 async function ensureLibxml2Loaded() {
   return new Promise(async (resolve, reject) => {
-    if (loader.libxml || loader.initError)
-      return resolve([]);
+    if (loader.libxml || loader.initError) return resolve([]);
     try {
       const mod = await import("https://ferdisap.github.io/xml-xsd_validator-browser/libxml2-wasm/lib/index.mjs");
       loader.libxml = mod;
@@ -38,7 +37,7 @@ function useLibXml2() {
   };
 }
 
-// dist/esm/validateFormWell.js
+// src/validateFormWell.ts
 async function validateWellForm(xmlText) {
   const errorBags = [];
   const { libxml: libxml2, ensureLibxmlLoaded } = useLibXml2();
@@ -59,8 +58,7 @@ async function validateWellForm(xmlText) {
         }
       });
     } else {
-      if (err.data)
-        errorBags.push(...err.data);
+      if (err.data) errorBags.push(...err.data);
       errorBags.push({
         name: "UnknownError",
         type: "form",
@@ -76,7 +74,7 @@ async function validateWellForm(xmlText) {
   });
 }
 
-// dist/esm/provider/MapInputProvider.js
+// src/provider/MapInputProvider.ts
 async function createMapInputProvider(map) {
   const { libxml: libxml2, ensureLibxmlLoaded } = useLibXml2();
   await ensureLibxmlLoaded();
@@ -87,8 +85,7 @@ async function createMapInputProvider(map) {
   let nextFd = 1;
   const toUint8 = (s) => new TextEncoder().encode(s);
   const normalizeKey = (k) => {
-    if (!k)
-      return k;
+    if (!k) return k;
     try {
       const u = new URL(k);
       return u.href;
@@ -106,8 +103,7 @@ async function createMapInputProvider(map) {
     }
   };
   if (map instanceof Map) {
-    for (const [k, v] of map.entries())
-      store.set(normalizeKey(k), toUint8(v));
+    for (const [k, v] of map.entries()) store.set(normalizeKey(k), toUint8(v));
   } else {
     for (const { filename, contents } of map)
       store.set(normalizeKey(filename), toUint8(contents));
@@ -119,17 +115,13 @@ async function createMapInputProvider(map) {
     }
   }
   const match = (filename) => {
-    if (!filename)
-      return false;
+    if (!filename) return false;
     const n = normalizeKey(filename);
-    if (store.has(n))
-      return true;
+    if (store.has(n)) return true;
     const base = basename(n);
-    if (store.has(base))
-      return true;
+    if (store.has(base)) return true;
     for (const k of store.keys()) {
-      if (n.endsWith(k) || k.endsWith(n))
-        return true;
+      if (n.endsWith(k) || k.endsWith(n)) return true;
     }
     return false;
   };
@@ -148,19 +140,16 @@ async function createMapInputProvider(map) {
         }
       }
     }
-    if (!data)
-      return void 0;
+    if (!data) return void 0;
     const fd = nextFd++;
     handles.set(fd, { pos: 0, data });
     return fd;
   };
   const read = (fd, buf) => {
     const h = handles.get(fd);
-    if (!h)
-      return -1;
+    if (!h) return -1;
     const remaining = h.data.length - h.pos;
-    if (remaining <= 0)
-      return 0;
+    if (remaining <= 0) return 0;
     const toCopy = Math.min(buf.byteLength, remaining);
     buf.set(h.data.subarray(h.pos, h.pos + toCopy), 0);
     h.pos += toCopy;
@@ -188,15 +177,14 @@ async function createMapInputProvider(map) {
   };
 }
 
-// dist/esm/util/helper.js
+// src/util/helper.ts
 async function findRequiredSchemas(mainSchemaUrl, visited = /* @__PURE__ */ new Set()) {
   if (visited.has(mainSchemaUrl)) {
     return Promise.resolve([]);
   }
   visited.add(mainSchemaUrl);
   return fetch(mainSchemaUrl).then((res) => {
-    if (!res.ok)
-      throw new Error(`Gagal fetch schema: ${mainSchemaUrl}`);
+    if (!res.ok) throw new Error(`Gagal fetch schema: ${mainSchemaUrl}`);
     return res.text();
   }).then(async (text) => {
     const regex = /<[a-zA-Z]{2}:(?:import|include|redefine)[^>]*schemaLocation="([^"]+)"/g;
@@ -206,13 +194,14 @@ async function findRequiredSchemas(mainSchemaUrl, visited = /* @__PURE__ */ new 
     for (const match of matches) {
       try {
         const resolved = new URL(match[1], base).href;
-        if (!visited.has(resolved))
-          nestedUrls.push(resolved);
+        if (!visited.has(resolved)) nestedUrls.push(resolved);
       } catch (e) {
         console.warn("URL tidak valid:", match[1]);
       }
     }
-    return Promise.all(nestedUrls.map((url) => findRequiredSchemas(url, visited))).then((nestedSchemasArrays) => {
+    return Promise.all(
+      nestedUrls.map((url) => findRequiredSchemas(url, visited))
+    ).then((nestedSchemasArrays) => {
       const nestedSchemas = nestedSchemasArrays.flat();
       return Promise.resolve([{ filename: mainSchemaUrl, contents: text }, ...nestedSchemas]);
     });
@@ -222,10 +211,13 @@ async function findRequiredSchemas(mainSchemaUrl, visited = /* @__PURE__ */ new 
   });
 }
 function extractSchemaLocation(xmlText) {
-  const noNsMatch = xmlText.match(/\b[a-zA-Z0-9]+:noNamespaceSchemaLocation\s*=\s*["']([^"']+)["']/i);
-  if (noNsMatch)
-    return noNsMatch[1];
-  const schemaLocMatch = xmlText.match(/\bxsi:schemaLocation\s*=\s*["']([^"']+)["']/i);
+  const noNsMatch = xmlText.match(
+    /\b[a-zA-Z0-9]+:noNamespaceSchemaLocation\s*=\s*["']([^"']+)["']/i
+  );
+  if (noNsMatch) return noNsMatch[1];
+  const schemaLocMatch = xmlText.match(
+    /\bxsi:schemaLocation\s*=\s*["']([^"']+)["']/i
+  );
   if (schemaLocMatch) {
     const parts = schemaLocMatch[1].trim().split(/\s+/);
     const urls = parts.filter((p) => /^https?:\/\/|\.xsd$/i.test(p));
@@ -248,7 +240,7 @@ async function getXmlText(file) {
   }
 }
 
-// dist/esm/validateTowardXsd.js
+// src/validateTowardXsd.ts
 async function validateXmlTowardXsd(file, mainSchemaUrl = null, stopOnFailure = true) {
   const { libxml: libxml2, ensureLibxmlLoaded } = useLibXml2();
   let provider = null;
@@ -395,7 +387,7 @@ async function validateXmlTowardXsd(file, mainSchemaUrl = null, stopOnFailure = 
   return Promise.reject(bags);
 }
 
-// dist/esm/worker/validator.worker.js
+// src/worker/validator.worker.ts
 async function validating(xmlText, mainSchemaUrl = null, stopOnFailure = true) {
   return Promise.all([
     validateWellForm(xmlText),

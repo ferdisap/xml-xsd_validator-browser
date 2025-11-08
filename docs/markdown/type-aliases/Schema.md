@@ -1,4 +1,4 @@
-[**xml-xsd-validator-browser v1.0.3**](../README.md)
+[**xml-xsd-validator-browser v1.0.4**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **Schema** = `object`
 
-Defined in: [types.ts:137](https://github.com/ferdisap/xml-xsd_validator-browser/blob/974c6bdeb6c555b2350d781bd48d963dd5aed509/src/types.ts#L137)
+Defined in: [types/types.ts:137](https://github.com/ferdisap/xml-xsd_validator-browser/blob/490baa48e5f31f6e979784148fbc24d41953b6e2/src/types/types.ts#L137)
 
 🔹 Representasi satu schema XSD yang diunduh/digunakan.
 
@@ -18,7 +18,7 @@ Defined in: [types.ts:137](https://github.com/ferdisap/xml-xsd_validator-browser
 
 > **filename**: `string`
 
-Defined in: [types.ts:139](https://github.com/ferdisap/xml-xsd_validator-browser/blob/974c6bdeb6c555b2350d781bd48d963dd5aed509/src/types.ts#L139)
+Defined in: [types/types.ts:139](https://github.com/ferdisap/xml-xsd_validator-browser/blob/490baa48e5f31f6e979784148fbc24d41953b6e2/src/types/types.ts#L139)
 
 Nama atau URL file schema
 
@@ -28,6 +28,6 @@ Nama atau URL file schema
 
 > **contents**: `string`
 
-Defined in: [types.ts:142](https://github.com/ferdisap/xml-xsd_validator-browser/blob/974c6bdeb6c555b2350d781bd48d963dd5aed509/src/types.ts#L142)
+Defined in: [types/types.ts:142](https://github.com/ferdisap/xml-xsd_validator-browser/blob/490baa48e5f31f6e979784148fbc24d41953b6e2/src/types/types.ts#L142)
 
 Isi schema XSD dalam bentuk teks

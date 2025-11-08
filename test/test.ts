@@ -1,7 +1,7 @@
-// import { ValidationInfo, WorkerResponse } from "../src/types";
-import { ValidationInfo, WorkerResponse } from "../dist/esm/types";
-// import { useWorker, validateXml } from "../src/validate";
-import { useWorker, validateXml } from "../dist/esm/validate";
+import { ValidationInfo, WorkerResponse } from "../src/types";
+// import { ValidationInfo, WorkerResponse } from "../dist/esm/types";
+import { useWorker, validateXml } from "../src/validate";
+// import { useWorker, validateXml } from "../dist/esm/validate";
 
 // const fileurl = "/test/xml_file.xml";
 // const xmlText = await getXmlText(fileurl);

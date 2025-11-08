@@ -47,7 +47,7 @@ const ignoreModuleImportPlugin = {
 // 🚫 Jangan bundle modul ini (biarkan import-nya tetap)
 // config.external = ["libxml2-wasm", "module"];
 // config.external = ["../../libxml2-wasm/lib/index.mjs"];
-config.external = ["../../libxml2-wasm/lib/index.mjs"];
+// config.external = ["../../libxml2-wasm/lib/index.mjs"];
 // config.external = ["module"];
 // config.treeShaking = false; // karena side effect libxml2-wasm
 
@@ -79,7 +79,7 @@ const workerPlugin = {
         sourcemap: false,
         // external: ["libxml2-wasm", "module"], // ✅ same externals
         // external: ["../../libxml2-wasm/lib/index.mjs"], // ✅ same externals
-        external: ["../../libxml2-wasm/lib/index.mjs"], // ✅ same externals
+        // external: ["../../libxml2-wasm/lib/index.mjs"], // ✅ same externals
         // external: ["module"], // ✅ same externals
         // treeShaking: false // karena side effect libxml2-wasm
         // plugins: [ignoreModuleImportPlugin]
@@ -99,7 +99,7 @@ const workerPlugin = {
 };
 
 // 🧱 Apply plugin
-config.plugins = [workerPlugin];
+// config.plugins = [workerPlugin];
 // config.plugins = [workerPlugin, ignoreModuleImportPlugin];
 
 

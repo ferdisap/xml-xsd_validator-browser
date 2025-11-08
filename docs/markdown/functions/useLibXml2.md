@@ -1,4 +1,4 @@
-[**xml-xsd-validator-browser v1.0.3**](../README.md)
+[**xml-xsd-validator-browser v1.0.4**](../README.md)
 
 ***
 
@@ -8,9 +8,14 @@
 
 > **useLibXml2**(): `object`
 
-Defined in: [libxmlloader.ts:48](https://github.com/ferdisap/xml-xsd_validator-browser/blob/974c6bdeb6c555b2350d781bd48d963dd5aed509/src/libxmlloader.ts#L48)
+Defined in: [libxml/libxmlloader.ts:142](https://github.com/ferdisap/xml-xsd_validator-browser/blob/490baa48e5f31f6e979784148fbc24d41953b6e2/src/libxml/libxmlloader.ts#L142)
+
+Ensure libxml2-wasm is initialized before use.
+Adds timeout protection in worker context to avoid infinite pending state.
 
 ## Returns
+
+`object`
 
 ### libxml()
 
@@ -22,12 +27,8 @@ Defined in: [libxmlloader.ts:48](https://github.com/ferdisap/xml-xsd_validator-b
 
 ### ensureLibxmlLoaded()
 
-> **ensureLibxmlLoaded**: () => `Promise`\<[`ValidationInfo`](../type-aliases/ValidationInfo.md)[]\> = `ensureLibxml2Loaded`
-
-To ensure that libxml2 has loaded, to let the worker can process.
+> **ensureLibxmlLoaded**: () => `Promise`\<`unknown`\> = `ensureLibxml2Loaded`
 
 #### Returns
 
-`Promise`\<[`ValidationInfo`](../type-aliases/ValidationInfo.md)[]\>
-
-Promise array contains validation info or an error instance of XmlError or XmlValidateError owned by libxml2-wasm
+`Promise`\<`unknown`\>

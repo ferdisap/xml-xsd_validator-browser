@@ -1,8 +1,8 @@
-[**xml-xsd-validator-browser v1.0.3**](README.md)
+[**xml-xsd-validator-browser v1.0.4**](README.md)
 
 ***
 
-# xml-xsd-validator-browser v1.0.3
+# xml-xsd-validator-browser v1.0.4
 
 ## Type Aliases
 

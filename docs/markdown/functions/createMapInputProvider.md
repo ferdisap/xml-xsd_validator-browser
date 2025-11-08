@@ -1,4 +1,4 @@
-[**xml-xsd-validator-browser v1.0.3**](../README.md)
+[**xml-xsd-validator-browser v1.0.4**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **createMapInputProvider**(`map`): `Promise`\<[`MapInputProvider`](../type-aliases/MapInputProvider.md)\>
 
-Defined in: [provider/MapInputProvider.ts:15](https://github.com/ferdisap/xml-xsd_validator-browser/blob/974c6bdeb6c555b2350d781bd48d963dd5aed509/src/provider/MapInputProvider.ts#L15)
+Defined in: [provider/MapInputProvider.ts:15](https://github.com/ferdisap/xml-xsd_validator-browser/blob/490baa48e5f31f6e979784148fbc24d41953b6e2/src/provider/MapInputProvider.ts#L15)
 
 Create a virtual file provider for libxml2-wasm.
 It maps filenames (or URLs) to in-memory schema contents,

@@ -1,7 +1,7 @@
 import { validateWellForm } from "./validateFormWell";
 import { UseWorker, ValidationInfo, ValidationPayload, WorkerPayload, WorkerResponse } from "./types/types";
 import { validateXmlTowardXsd } from "./validateTowardXsd";
-import * as ValidatorWorker from "./worker/validator.worker?worker";
+// import * as ValidatorWorker from "./worker/validator.worker?worker";
 // import ValidatorWorker from "./worker/validator.worker?worker";
 
 
@@ -11,6 +11,7 @@ export async function createValidatorWorker(): Promise<Worker> {
   // works for Vite and esbuild
   const WorkerConstructor = (await import("./worker/validator.worker?worker")).default;
   return new WorkerConstructor();
+  // return new ValidatorWorker()
 }
 
 /**
