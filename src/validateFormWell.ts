@@ -1,4 +1,4 @@
-import { useLibXml2 } from "./libxmlloader";
+import { useLibXml2 } from "./libxml/libxmlloader";
 import { WorkerBags } from "./types";
 
 /**

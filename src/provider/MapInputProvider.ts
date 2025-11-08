@@ -3,7 +3,7 @@
 //   xmlCleanupInputProvider,
 // } from "libxml2-wasm";
 
-import { useLibXml2 } from "../libxmlloader";
+import { useLibXml2 } from "../libxml/libxmlloader";
 import { MapInputProvider, Schema } from "../types";
 
 /**

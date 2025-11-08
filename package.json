@@ -18,14 +18,15 @@
   "sideEffects": false,
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
+    "build": "tsc -p tsconfig.esm.json",
     "test": "node test/build-test.js",
     "prepare": "npm run build",
     "docs:md": "typedoc --plugin typedoc-plugin-markdown --out docs/markdown",
     "docs:html": "typedoc --out docs/html",
-    "docs": "npm run docs:html && npm run docs:md"
+    "docs": "npm run docs:html && npm run docs:md",
+    "minify-libxml": "node libxml2-wasm/minify.js"
   },
-    "keywords": [
+  "keywords": [
     "xsd",
     "xml",
     "typescript",
@@ -42,10 +43,14 @@
   },
   "homepage": "https://github.com/ferdisap/xml-xsd_validator-browser#readme",
   "dependencies": {
-    "libxml2-wasm": "^0.6.0"
+    "libxml2-wasm": "0.6.0",
+    "vite-plugin-top-level-await": "^1.6.0",
+    "vite-plugin-wasm": "^3.5.0"
   },
   "devDependencies": {
     "@types/node": "^24.10.0",
+    "glob": "^11.0.3",
+    "terser": "^5.44.1",
     "typedoc": "^0.28.14",
     "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "^5.9.3",

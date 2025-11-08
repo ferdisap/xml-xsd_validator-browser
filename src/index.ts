@@ -12,6 +12,6 @@ export { validateWellForm } from "./validateFormWell"
 export { validateXmlTowardXsd } from "./validateTowardXsd"
 
 // Jika ingin custom dengan libXml2
-export { ensureLibxml2Loaded, useLibXml2 } from "./libxmlloader";
+export { ensureLibxml2Loaded, useLibXml2 } from "./libxml/libxmlloader";
 
 export * from "./types";

@@ -1,17 +1,16 @@
-import { ensureLibxml2Loaded } from "../libxmlloader";
+import { ensureLibxml2Loaded, libxml } from "../libxml/libxmlloader";
 import { ValidationPayload, ValidationResponse, WorkerBags, WorkerPayload, WorkerResponse } from "../types";
 import { validateWellForm } from "../validateFormWell";
 import { validateXmlTowardXsd } from "../validateTowardXsd";
 
 async function validating(xmlText: string, mainSchemaUrl: string | null = null, stopOnFailure: boolean = true) {
 
-  await ensureLibxml2Loaded();
   return Promise.all([
     validateWellForm(xmlText),
     validateXmlTowardXsd(xmlText, mainSchemaUrl, stopOnFailure)
   ])
-  .then(() => Promise.resolve([]))
-  .catch((bags: WorkerBags) => Promise.reject(bags))
+    .then(() => Promise.resolve([]))
+    .catch((bags: WorkerBags) => Promise.reject(bags))
 }
 async function run(xmlText: string, mainSchemaUrl: string | null = null, stopOnFailure: boolean = true, duration: number = 3000): Promise<WorkerBags> {
 

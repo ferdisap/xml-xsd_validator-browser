@@ -18,6 +18,7 @@ const config = {
   }
 }
 
+
 // 🧠 Helper: resolve alias absolute path
 if (config.alias) {
   config.alias = Object.fromEntries(
@@ -25,9 +26,30 @@ if (config.alias) {
   );
 }
 
+const ignoreModuleImportPlugin = {
+  name: "ignore-node-module",
+  setup(build) {
+    // Gantikan import('module') dengan object kosong
+    build.onResolve({ filter: /^module$/ }, args => {
+      return { path: args.path, namespace: "empty-module" };
+    });
+
+    build.onLoad({ filter: /.*/, namespace: "empty-module" }, () => {
+      return {
+        contents: "export const createRequire = () => () => { throw new Error('require not available in browser'); };",
+        loader: "js"
+      };
+    });
+  },
+};
+
+
 // 🚫 Jangan bundle modul ini (biarkan import-nya tetap)
 // config.external = ["libxml2-wasm", "module"];
-config.external = ["module"];
+// config.external = ["../../libxml2-wasm/lib/index.mjs"];
+config.external = ["../../libxml2-wasm/lib/index.mjs"];
+// config.external = ["module"];
+// config.treeShaking = false; // karena side effect libxml2-wasm
 
 // 📦 Plugin: handle ?worker imports
 const workerPlugin = {
@@ -56,7 +78,11 @@ const workerPlugin = {
         target: "esnext",
         sourcemap: false,
         // external: ["libxml2-wasm", "module"], // ✅ same externals
-        external: ["module"], // ✅ same externals
+        // external: ["../../libxml2-wasm/lib/index.mjs"], // ✅ same externals
+        external: ["../../libxml2-wasm/lib/index.mjs"], // ✅ same externals
+        // external: ["module"], // ✅ same externals
+        // treeShaking: false // karena side effect libxml2-wasm
+        // plugins: [ignoreModuleImportPlugin]
       });
 
       // 🔁 Replace ?worker import with Worker constructor
@@ -74,6 +100,8 @@ const workerPlugin = {
 
 // 🧱 Apply plugin
 config.plugins = [workerPlugin];
+// config.plugins = [workerPlugin, ignoreModuleImportPlugin];
+
 
 // ✅ Ensure output is also ESM & browser-compatible
 config.platform = "browser";
