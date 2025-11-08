@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
-    "test": "node dist/test.js",
+    "test": "node test/build-test.js",
     "prepare": "npm run build",
     "docs:md": "typedoc --plugin typedoc-plugin-markdown --out docs/markdown",
     "docs:html": "typedoc --out docs/html",

@@ -1,5 +1,4 @@
 import { ValidationInfo, WorkerResponse } from "../src/types";
-import { extractSchemaLocation, getXmlText } from "../src/util/helper";
 import { useWorker, validateXml } from "../src/validate";
 
 // const fileurl = "/test/xml_file.xml";
@@ -12,9 +11,11 @@ function appendToHTML(idEl: string, errors: ValidationInfo[]) {
       const div = document.createElement("div");
       div.className = "error-item";
       div.innerHTML = `
-        <strong>${i + 1}. ${err.name}</strong> <em>(${err.type})</em><br>
-        <pre>${err.detail.message.trim()}</pre>
-        <small>Line: ${err.detail.line}, Col: ${err.detail.col}</small>
+<strong>${i + 1}. ${err.name}</strong>
+<em>(${err.type})</em>
+<br>
+  <pre>${err.detail.message.trim()}</pre>
+  <small>Line: ${err.detail.line}, Col: ${err.detail.col}</small>
       `;
       container.appendChild(div);
     });
@@ -25,12 +26,10 @@ function test1() {
   const xmlText =
   `<?xml version="1.0" encoding="UTF-8"?>
   <!DOCTYPE dmodule >
-  <dmodule
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:dc="http://www.purl.org/dc/elements/1.1/" 
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
-    xmlns:xlink="http://www.w3.org/1999/xlink" 
-    xsi:noNamespaceSchemaLocation="https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd">
+  <dmodule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dc="http://www.purl.org/dc/elements/1.1/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xlink="http://www.w3.org/1999/xlink" xsi:noNamespaceSchemaLocation="https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd">
     <identAndStatusSection></identAndStatusSection>
   </dmodule>`;
   validateXml(xmlText)
@@ -43,7 +42,7 @@ test1()
 
 async function test2() {
   const xmlText =
-    `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE dmodule >
+    `<?xml version="1.0" encoding="UTF-8"?>  <!DOCTYPE dmodule >
   <dmodule>
     <identAndStatusSection></identAndStatusSection>
   </dmodule>`;
