@@ -26,7 +26,8 @@ if (config.alias) {
 }
 
 // 🚫 Jangan bundle modul ini (biarkan import-nya tetap)
-config.external = ["libxml2-wasm", "module"];
+// config.external = ["libxml2-wasm", "module"];
+config.external = ["module"];
 
 // 📦 Plugin: handle ?worker imports
 const workerPlugin = {
@@ -54,7 +55,8 @@ const workerPlugin = {
         format: "esm",                // ✅ make it ES module
         target: "esnext",
         sourcemap: false,
-        external: ["libxml2-wasm", "module"], // ✅ same externals
+        // external: ["libxml2-wasm", "module"], // ✅ same externals
+        external: ["module"], // ✅ same externals
       });
 
       // 🔁 Replace ?worker import with Worker constructor
