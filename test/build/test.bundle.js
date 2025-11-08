@@ -386,11 +386,6 @@ async function validateXmlTowardXsd(file, mainSchemaUrl = null, stopOnFailure = 
   return Promise.reject(bags);
 }
 
-// worker:D:\data_ferdi\application\xml-xsd_validation-browser\src\worker\validator.worker
-function WorkerWrapper() {
-  return new Worker(new URL("./validator.worker.js", import.meta.url), { type: "module" });
-}
-
 // src/validate.ts
 async function validateXml(xmlText, mainSchemaUrl = null, stopOnFailure = true) {
   const errors = [];
@@ -406,45 +401,6 @@ async function validateXml(xmlText, mainSchemaUrl = null, stopOnFailure = true) 
     }
     return errors;
   });
-}
-function useWorker() {
-  const validatorWorker = new WorkerWrapper();
-  const _responses = /* @__PURE__ */ new Map();
-  validatorWorker.onmessage = (e) => {
-    const { id, status, bags } = e.data;
-    if (status) {
-      if (_responses.has(id)) {
-        const { resolve } = _responses.get(id);
-        resolve({ id, status, bags });
-        _responses.delete(id);
-      }
-    } else {
-      const { reject } = _responses.get(id);
-      reject({ id, status, bags });
-      _responses.delete(id);
-    }
-  };
-  validatorWorker.onerror = function(e) {
-    throw new Error("Worker error");
-  };
-  const terminate = () => {
-    validatorWorker.terminate();
-  };
-  const validate = (xmlText, mainSchemaUrl, stopOnFailure = true) => {
-    const id = crypto.randomUUID();
-    return new Promise((resolve, reject) => {
-      _responses.set(id, { resolve, reject });
-      const payload = {
-        id,
-        payload: { xmlText, mainSchemaUrl, stopOnFailure }
-      };
-      validatorWorker.postMessage(payload);
-    });
-  };
-  return {
-    validate,
-    terminate
-  };
 }
 
 // test/test.ts
@@ -480,23 +436,4 @@ function test1() {
   });
 }
 test1();
-async function test2() {
-  const xmlText = `<?xml version="1.0" encoding="UTF-8"?>  <!DOCTYPE dmodule >
-  <dmodule>
-    <identAndStatusSection></identAndStatusSection>
-  </dmodule>`;
-  const mainSchemaUrl = "http://www.s1000d.org/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd";
-  const { validate, terminate } = useWorker();
-  validate(xmlText, mainSchemaUrl).then((response) => {
-    const { id, status, bags } = response;
-    console.log(id, status, bags);
-    appendToHTML("for_test_2", bags);
-  }).catch((response) => {
-    const { id, status, bags } = response;
-    console.log(id, status, bags);
-    appendToHTML("for_test_2", bags);
-    terminate();
-  });
-}
-test2();
 //# sourceMappingURL=test.bundle.js.map
