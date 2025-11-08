@@ -1,33 +1,9 @@
-var __defProp = Object.defineProperty;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __esm = (fn, res) => function __init() {
   return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
 };
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-
-// worker:D:\data_ferdi\application\xml-xsd_validation-browser\src\worker\validator.worker
-var validator_exports = {};
-__export(validator_exports, {
-  default: () => WorkerWrapper
-});
-function WorkerWrapper() {
-  return new Worker(new URL("./validator.worker.js", import.meta.url), { type: "module" });
-}
-var init_validator = __esm({
-  "worker:D:\\data_ferdi\\application\\xml-xsd_validation-browser\\src\\worker\\validator.worker"() {
-    "use strict";
-  }
-});
 
 // src/libxml/libxmlloader.ts
-var loader = {
-  libxml: null,
-  // loadingPromise: null as Promise<void> | null,
-  initError: null
-};
 function libxml() {
   return loader.libxml;
 }
@@ -60,6 +36,17 @@ function useLibXml2() {
     ensureLibxmlLoaded: ensureLibxml2Loaded
   };
 }
+var loader;
+var init_libxmlloader = __esm({
+  "src/libxml/libxmlloader.ts"() {
+    "use strict";
+    loader = {
+      libxml: null,
+      // loadingPromise: null as Promise<void> | null,
+      initError: null
+    };
+  }
+});
 
 // src/validateFormWell.ts
 async function validateWellForm(xmlText) {
@@ -97,6 +84,12 @@ async function validateWellForm(xmlText) {
     return Promise.reject(errorBags);
   });
 }
+var init_validateFormWell = __esm({
+  "src/validateFormWell.ts"() {
+    "use strict";
+    init_libxmlloader();
+  }
+});
 
 // src/provider/MapInputProvider.ts
 async function createMapInputProvider(map) {
@@ -200,6 +193,12 @@ async function createMapInputProvider(map) {
     cleanup
   };
 }
+var init_MapInputProvider = __esm({
+  "src/provider/MapInputProvider.ts"() {
+    "use strict";
+    init_libxmlloader();
+  }
+});
 
 // src/util/helper.ts
 async function findRequiredSchemas(mainSchemaUrl, visited = /* @__PURE__ */ new Set()) {
@@ -263,6 +262,11 @@ async function getXmlText(file) {
     return fetch(fileurl).then((r) => r.text());
   }
 }
+var init_helper = __esm({
+  "src/util/helper.ts"() {
+    "use strict";
+  }
+});
 
 // src/validateTowardXsd.ts
 async function validateXmlTowardXsd(file, mainSchemaUrl = null, stopOnFailure = true) {
@@ -410,10 +414,81 @@ async function validateXmlTowardXsd(file, mainSchemaUrl = null, stopOnFailure = 
   provider?.cleanup();
   return Promise.reject(bags);
 }
+var init_validateTowardXsd = __esm({
+  "src/validateTowardXsd.ts"() {
+    "use strict";
+    init_MapInputProvider();
+    init_helper();
+    init_libxmlloader();
+  }
+});
+
+// src/worker/validator.worker.ts?worker
+var validator_worker_exports = {};
+async function validating(xmlText, mainSchemaUrl = null, stopOnFailure = true) {
+  return Promise.all([
+    validateWellForm(xmlText),
+    validateXmlTowardXsd(xmlText, mainSchemaUrl, stopOnFailure)
+  ]).then(() => Promise.resolve([])).catch((bags) => Promise.reject(bags));
+}
+async function run(xmlText, mainSchemaUrl = null, stopOnFailure = true, duration = 3e3) {
+  const timer = setTimeout(() => {
+    Promise.reject([
+      {
+        name: "ParseTimeout",
+        type: "form",
+        details: {
+          message: "Parsing timeout or worker unresponsive",
+          file: "",
+          line: 1,
+          col: 1
+        }
+      }
+    ]);
+  }, duration);
+  return validating(xmlText, mainSchemaUrl, stopOnFailure).then((data) => {
+    clearTimeout(timer);
+    return Promise.resolve(data);
+  }).catch((bags) => {
+    clearTimeout(timer);
+    return Promise.reject(bags);
+  });
+}
+var init_validator_worker = __esm({
+  "src/worker/validator.worker.ts?worker"() {
+    "use strict";
+    init_validateFormWell();
+    init_validateTowardXsd();
+    self.onmessage = (e) => {
+      const { id, payload } = e.data;
+      const { xmlText, mainSchemaUrl, stopOnFailure, duration } = payload;
+      const errorBags = [];
+      run(xmlText, mainSchemaUrl, stopOnFailure, duration).then((i) => {
+        errorBags.push(...i);
+        const response = {
+          id,
+          status: true,
+          bags: errorBags
+        };
+        self.postMessage(response);
+      }).catch((e2) => {
+        errorBags.push(...e2);
+        const response = {
+          id,
+          status: false,
+          bags: errorBags
+        };
+        self.postMessage(response);
+      });
+    };
+  }
+});
 
 // src/validate.ts
+init_validateFormWell();
+init_validateTowardXsd();
 async function createValidatorWorker() {
-  const WorkerConstructor = (await Promise.resolve().then(() => (init_validator(), validator_exports))).default;
+  const WorkerConstructor = (await Promise.resolve().then(() => (init_validator_worker(), validator_worker_exports))).default;
   return new WorkerConstructor();
 }
 async function validateXml(xmlText, mainSchemaUrl = null, stopOnFailure = true) {
