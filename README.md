@@ -1,14 +1,17 @@
-**xml-xsd-validator-browser v1.0.2**
+**xml-xsd-validator-browser v1.0.3**
 
-# xml-xsd-validator-browser
+# 🧩 xml-xsd-validator-browser
 
 A lightweight **XML validator in the browser** using [`libxml2-wasm`](https://github.com/jameslan/libxml2-wasm) with support for **recursive XSD imports/includes/redefines** via a `MapInputProvider`.
 
 This library allows you to validate XML files against complex XSD schemas that reference multiple nested schemas, **without requiring network requests during validation**.
 
+Read the docs:
+- [Github] https://ferdisap.github.io/xml-xsd_validator-browser/docs/html/index
+- [Github] https://ferdisap.github.io/xml-xsd_validator-browser/docs/html/modules
 ---
 
-## Features
+## 🟢 Features
 
 - Validate XML documents in the browser or Node.js.
 - Automatically resolve nested `<xs:import>`, `<xs:include>`, and `<xs:redefine>`.
@@ -18,7 +21,7 @@ This library allows you to validate XML files against complex XSD schemas that r
 
 ---
 
-## Installation
+## 🔧 Installation
 
 ```bash
 npm i xml-xsd-validator-browser

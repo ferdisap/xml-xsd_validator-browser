@@ -19,7 +19,6 @@ function libxml(){
  * @returns Promise array contains validation info or an error instance of XmlError or XmlValidateError owned by libxml2-wasm 
  */
 export async function ensureLibxml2Loaded(): Promise<ValidationInfo[]> {
-  console.trace()
   return new Promise(async (resolve, reject) => {
     if ((loader).libxml || loader.initError) return resolve([]);
     try {

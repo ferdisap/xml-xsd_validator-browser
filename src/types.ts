@@ -75,7 +75,7 @@ export type ValidationType = "xsd" | "dtd" | "form" | "none";
 /**
  * 🔹 Informasi detail tentang satu hasil error atau validasi.
  */
-export interface ValidationInfo {
+export type ValidationInfo = {
   /** Nama atau kategori error */
   name: ErrorName;
 

@@ -6,13 +6,12 @@ import { validateXmlTowardXsd } from "../validateTowardXsd";
 async function validating(xmlText: string, mainSchemaUrl: string | null = null, stopOnFailure: boolean = true) {
 
   await ensureLibxml2Loaded();
-
   return Promise.all([
     validateWellForm(xmlText),
     validateXmlTowardXsd(xmlText, mainSchemaUrl, stopOnFailure)
   ])
-    .then(() => [])
-    .catch((bags:WorkerBags) => bags)
+  .then(() => Promise.resolve([]))
+  .catch((bags: WorkerBags) => Promise.reject(bags))
 }
 async function run(xmlText: string, mainSchemaUrl: string | null = null, stopOnFailure: boolean = true, duration: number = 3000): Promise<WorkerBags> {
 
@@ -32,33 +31,36 @@ async function run(xmlText: string, mainSchemaUrl: string | null = null, stopOnF
   }, duration);
 
   return validating(xmlText, mainSchemaUrl, stopOnFailure)
-  .then((data) => {
-    clearTimeout(timer);
-    return data
-  })
-  .catch(bags => bags)
+    .then((data) => {
+      clearTimeout(timer);
+      return Promise.resolve(data)
+    })
+    .catch(bags => {
+      clearTimeout(timer)
+      return Promise.reject(bags)
+    })
 }
 
 self.onmessage = (e: MessageEvent<WorkerPayload<ValidationPayload>>) => {
   const { id, payload } = e.data;
   const { xmlText, mainSchemaUrl, stopOnFailure, duration } = payload;
-  let status = false;
 
   const errorBags: WorkerBags = [];
   run(xmlText, mainSchemaUrl, stopOnFailure, duration)
     .then((i) => {
       errorBags.push(...i);
-      status = true;
-      return errorBags;
+      const response: WorkerResponse = {
+        id,
+        status: true,
+        bags: errorBags,
+      }
+      self.postMessage(response);
     })
     .catch(e => {
       errorBags.push(...e);
-      return errorBags
-    })
-    .finally(() => {
       const response: WorkerResponse = {
         id,
-        status,
+        status: false,
         bags: errorBags,
       }
       self.postMessage(response)

@@ -2,7 +2,7 @@
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": ["src/index.ts"],
   "out": "docs",
-  "name": "xsd-parser",
+  "name": "xml-xsd-validator-browser",
   "includeVersion": true,
   "tsconfig": "tsconfig.esm.json",
   "excludePrivate": true,

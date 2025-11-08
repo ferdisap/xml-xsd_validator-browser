@@ -1,6 +1,6 @@
 {
   "name": "xml-xsd-validator-browser",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "To validate XML file by the XSD. Able to nested XSD by xs:include, xs:redefine, and xs:import which have different namespace. Now it is able to run in web worker and better user experience.",
   "type": "module",
   "main": "./dist/esm/index.js",
@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
-    "test": "node dist/test.js",
+    "test": "node test/build-test.js",
     "prepare": "npm run build",
     "docs:md": "typedoc --plugin typedoc-plugin-markdown --out docs/markdown",
     "docs:html": "typedoc --out docs/html",

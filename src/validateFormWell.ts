@@ -12,7 +12,7 @@ export async function validateWellForm(xmlText: string): Promise<WorkerBags> {
   return ensureLibxmlLoaded()
     .then(() => {
       libxml().XmlDocument.fromString(xmlText);
-      return errorBags;
+      return Promise.resolve([]);
     })
     .catch((err:any) => {
       // to check wheer err is instance of XMlParseError. Use attribute details because class instance cannot used in worker

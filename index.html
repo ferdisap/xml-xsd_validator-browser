@@ -1,14 +1,228 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <!-- <script src="./src/main.ts" type="module"></script> -->
-  <script src="./test/test.ts" type="module"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>xml-xsd-validator-browser Documentation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css">
+  <script src="./test/build/test.bundle.js" type="module"></script>
+  <style>
+    :root {
+      --bg: #fff;
+      --muted: #6b7280;
+      --code-bg: #f6f8fa;
+      --border: #e5e7eb;
+      --accent: #111827;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    body {
+      margin: 24px;
+      background: var(--bg);
+      color: var(--accent);
+      line-height: 1.6;
+    }
+
+    header h1 {
+      margin: 0 0 8px 0;
+      font-size: 1.5rem;
+      display: flex;
+      gap: .5rem;
+      align-items: center;
+    }
+
+    header p.version {
+      margin: 0;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 20px 0;
+    }
+
+    h2 {
+      margin-top: 20px;
+    }
+
+    ul {
+      margin: 8px 0 16px 20px;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 6px;
+      overflow: auto;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Helvetica Neue", monospace;
+      font-size: .95rem;
+    }
+
+    a {
+      color: #0b60ff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: .95rem;
+      margin-bottom: 12px;
+    }
+
+    .features li {
+      margin-bottom: 8px;
+    }
+
+    /* make highlighted code area stand out a bit */
+    .hljs {
+      padding: 1rem;
+      border-radius: 6px;
+    }
+
+    /* output */
+    .error-item {
+      border-left: 4px solid #e11d48;
+      background: #fff;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .error-item strong {
+      color: #b91c1c;
+    }
+  </style>
 </head>
+
 <body>
-  fufufafa
+  <header>
+    <div>
+      <h1>🧩 xml-xsd-validator-browser</h1>
+      <p class="version"><strong>xml-xsd-validator-browser v1.0.3</strong></p>
+    </div>
+  </header>
+
+  <section class="meta">
+    <p>A lightweight <strong>XML validator in the browser</strong> using <a
+        href="https://github.com/jameslan/libxml2-wasm" target="_blank" rel="noopener noreferrer">libxml2-wasm</a> with
+      support for <strong>recursive XSD imports/includes/redefines</strong> via a <code>MapInputProvider</code>.</p>
+    <p>This library allows you to validate XML files against complex XSD schemas that reference multiple nested schemas,
+      <strong>without requiring network requests during validation</strong>.
+    </p>
+
+    <p>Read the docs:</p>
+    <ul>
+      <li><a href="https://ferdisap.github.io/xml-xsd_validator-browser/docs/html/index" target="_blank"
+          rel="noopener noreferrer">Github (docs index)</a></li>
+      <li><a href="https://ferdisap.github.io/xml-xsd_validator-browser/docs/html/modules" target="_blank"
+          rel="noopener noreferrer">Github (modules)</a></li>
+    </ul>
+  </section>
+
+  <hr />
+
+  <section>
+    <h2>🟢 Features</h2>
+    <ul class="features">
+      <li>Validate XML documents in the browser or Node.js.</li>
+      <li>Automatically resolve nested <code>&lt;xs:import&gt;</code>, <code>&lt;xs:include&gt;</code>, and
+        <code>&lt;xs:redefine&gt;</code>.
+      </li>
+      <li>Use <code>MapInputProvider</code> to provide XSD files from memory (no network fetch needed during
+        validation).</li>
+      <li>Works with absolute URLs or relative schema paths.</li>
+      <li>Simple API with Promises and TypeScript support.</li>
+    </ul>
+  </section>
+
+  <hr />
+
+  <section>
+    <h2>🔧 Installation</h2>
+    <pre><code>npm i xml-xsd-validator-browser</code></pre>
+  </section>
+
+  <section>
+    <h2>🧰 Usage Example (JavaScript)</h2>
+    <p>Example below is plain JavaScript — syntax-highlighted using <strong>highlight.js</strong>.</p>
+
+    <pre><code class="language-javascript">// usage-example.js
+import { extractSchemaLocation, getXmlText } from "../src/util/helper";
+import { useWorker, validateXml } from "../src/validate";
+
+// Example 1: quick validate (throws on error)
+function test1() {
+   const xmlText = 
+   `&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    &lt;!DOCTYPE dmodule &gt;
+    &lt;dmodule 
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:dc="http://www.purl.org/dc/elements/1.1/"
+      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xsi:noNamespaceSchemaLocation="https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd"&gt;
+      &lt;identAndStatusSection&gt;&lt;/identAndStatusSection&gt;
+    &lt;/dmodule&gt;`;
+
+  validateXml(xmlText)
+    .catch(err => {
+      // err is an array of validation objects, each with name: "XMLValidateError"
+      console.error('Validation errors:', err);
+    });
+}
+
+// Example 2: using a worker to validate (non-blocking)
+async function test2() {
+  const xmlText =
+  `&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;!DOCTYPE dmodule &gt;
+  &lt;dmodule&gt;
+    &lt;identAndStatusSection&gt;&lt;/identAndStatusSection&gt;
+  &lt;/dmodule&gt;`;
+
+  const mainSchemaUrl = "http://www.s1000d.org/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd"; // CORS
+
+  const { validate, terminate } = useWorker();
+
+  validate(xmlText, mainSchemaUrl)
+    .catch(err => {
+      // err is an array of XMLValidateError objects
+      console.error('Worker validation failed:', err); // "Fetch Error" because CORS
+      terminate();
+    });
+}
+
+// Run examples
+test1();
+test2();</code></pre>
+  </section>
+
+  <section>
+    <h2>🧰 Output Example (JavaScript)</h2>
+    <p>Below the output of the usage example above.</p>
+    <div id="for_test_1">
+      <h3>for test 1</h3>
+    </div>
+    <div id="for_test_2">
+      <h3>for test 2</h3>
+    </div>
+  </section>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
 </body>
+
 </html>

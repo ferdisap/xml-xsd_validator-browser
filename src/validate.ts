@@ -1,4 +1,3 @@
-// import { MapInputProvider } from "./provider/MapInputProvider";
 import { validateWellForm } from "./validateFormWell";
 import { UseWorker, ValidationInfo, ValidationPayload, WorkerPayload, WorkerResponse } from "./types";
 import { validateXmlTowardXsd } from "./validateTowardXsd";

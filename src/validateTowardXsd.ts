@@ -34,7 +34,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
       }
     })
     if (stopOnFailure) {
-      Promise.reject(bags);
+      return Promise.reject(bags);
     }
   }
   mainSchemaUrl = mainSchemaUrl ?? extractSchemaLocation(xmlText!);
@@ -51,7 +51,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
       }
     })
     if (stopOnFailure) {
-      Promise.reject(bags);
+      return Promise.reject(bags);
     }
   }
 
@@ -72,7 +72,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
       }
     })
     if (stopOnFailure) {
-      Promise.reject(bags);
+      return Promise.reject(bags);
     }
   }
 
@@ -93,7 +93,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
       }
     })
     if (stopOnFailure) {
-      Promise.reject(bags);
+      return Promise.reject(bags);
     }
   }
 
@@ -119,7 +119,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
     })
     if (stopOnFailure) {
       provider?.cleanup();
-      Promise.reject(bags);
+      return Promise.reject(bags);
     }
   }
 
@@ -141,7 +141,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
     })
     if (stopOnFailure) {
       provider?.cleanup();
-      Promise.reject(bags);
+      return Promise.reject(bags);
     }
   }
 
@@ -163,7 +163,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
     }
     if (stopOnFailure) {
       provider?.cleanup();
-      Promise.reject(bags);
+      return Promise.reject(bags);
     }
   }
 
