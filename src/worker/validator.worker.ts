@@ -38,7 +38,7 @@ async function run(xmlText: string, mainSchemaUrl: string | null = null, stopOnF
     })
 }
 
-console.log('[worker] self on message ready');
+// console.log('[worker] self on message ready');
 self.postMessage({
   ready: true
 });

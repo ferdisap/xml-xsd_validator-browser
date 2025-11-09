@@ -1,61 +1,3 @@
-const scriptRel = "modulepreload";
-const assetsURL = function(dep, importerUrl) {
-  return new URL(dep, importerUrl).href;
-};
-const seen = {};
-const __vitePreload = function preload(baseModule, deps, importerUrl) {
-  let promise = Promise.resolve();
-  if (deps && deps.length > 0) {
-    let allSettled = function(promises$2) {
-      return Promise.all(promises$2.map((p) => Promise.resolve(p).then((value$1) => ({
-        status: "fulfilled",
-        value: value$1
-      }), (reason) => ({
-        status: "rejected",
-        reason
-      }))));
-    };
-    const links = document.getElementsByTagName("link");
-    const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
-    const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
-    promise = allSettled(deps.map((dep) => {
-      dep = assetsURL(dep, importerUrl);
-      if (dep in seen) return;
-      seen[dep] = true;
-      const isCss = dep.endsWith(".css");
-      const cssSelector = isCss ? '[rel="stylesheet"]' : "";
-      if (!!importerUrl) for (let i$1 = links.length - 1; i$1 >= 0; i$1--) {
-        const link$1 = links[i$1];
-        if (link$1.href === dep && (!isCss || link$1.rel === "stylesheet")) return;
-      }
-      else if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) return;
-      const link = document.createElement("link");
-      link.rel = isCss ? "stylesheet" : scriptRel;
-      if (!isCss) link.as = "script";
-      link.crossOrigin = "";
-      link.href = dep;
-      if (cspNonce) link.setAttribute("nonce", cspNonce);
-      document.head.appendChild(link);
-      if (isCss) return new Promise((res, rej) => {
-        link.addEventListener("load", res);
-        link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
-      });
-    }));
-  }
-  function handlePreloadError(err$2) {
-    const e$1 = new Event("vite:preloadError", { cancelable: true });
-    e$1.payload = err$2;
-    window.dispatchEvent(e$1);
-    if (!e$1.defaultPrevented) throw err$2;
-  }
-  return promise.then((res) => {
-    for (const item of res || []) {
-      if (item.status !== "rejected") continue;
-      handlePreloadError(item.reason);
-    }
-    return baseModule().catch(handlePreloadError);
-  });
-};
 const noopTracker = {
   trackAllocate() {
   },
@@ -334,6 +276,64 @@ class XmlStringOutputBufferHandler {
     return this._result;
   }
 }
+const scriptRel = "modulepreload";
+const assetsURL = function(dep, importerUrl) {
+  return new URL(dep, importerUrl).href;
+};
+const seen = {};
+const __vitePreload = function preload(baseModule, deps, importerUrl) {
+  let promise = Promise.resolve();
+  if (deps && deps.length > 0) {
+    let allSettled = function(promises$2) {
+      return Promise.all(promises$2.map((p) => Promise.resolve(p).then((value$1) => ({
+        status: "fulfilled",
+        value: value$1
+      }), (reason) => ({
+        status: "rejected",
+        reason
+      }))));
+    };
+    const links = document.getElementsByTagName("link");
+    const cspNonceMeta = document.querySelector("meta[property=csp-nonce]");
+    const cspNonce = cspNonceMeta?.nonce || cspNonceMeta?.getAttribute("nonce");
+    promise = allSettled(deps.map((dep) => {
+      dep = assetsURL(dep, importerUrl);
+      if (dep in seen) return;
+      seen[dep] = true;
+      const isCss = dep.endsWith(".css");
+      const cssSelector = isCss ? '[rel="stylesheet"]' : "";
+      if (!!importerUrl) for (let i$1 = links.length - 1; i$1 >= 0; i$1--) {
+        const link$1 = links[i$1];
+        if (link$1.href === dep && (!isCss || link$1.rel === "stylesheet")) return;
+      }
+      else if (document.querySelector(`link[href="${dep}"]${cssSelector}`)) return;
+      const link = document.createElement("link");
+      link.rel = isCss ? "stylesheet" : scriptRel;
+      if (!isCss) link.as = "script";
+      link.crossOrigin = "";
+      link.href = dep;
+      if (cspNonce) link.setAttribute("nonce", cspNonce);
+      document.head.appendChild(link);
+      if (isCss) return new Promise((res, rej) => {
+        link.addEventListener("load", res);
+        link.addEventListener("error", () => rej(/* @__PURE__ */ new Error(`Unable to preload CSS for ${dep}`)));
+      });
+    }));
+  }
+  function handlePreloadError(err$2) {
+    const e$1 = new Event("vite:preloadError", { cancelable: true });
+    e$1.payload = err$2;
+    window.dispatchEvent(e$1);
+    if (!e$1.defaultPrevented) throw err$2;
+  }
+  return promise.then((res) => {
+    for (const item of res || []) {
+      if (item.status !== "rejected") continue;
+      handlePreloadError(item.reason);
+    }
+    return baseModule().catch(handlePreloadError);
+  });
+};
 var Module = /* @__PURE__ */ (() => {
   return (async function(moduleArg = {}) {
     var moduleRtn;
@@ -6503,7 +6503,7 @@ async function validateXmlTowardXsd(file, mainSchemaUrl = null, stopOnFailure = 
 function WorkerWrapper() {
   return new Worker(new URL(
     /* @vite-ignore */
-    "" + new URL("assets/validator.worker-DRVPTPN3.js", import.meta.url).href,
+    "" + new URL("assets/validator.worker-BR20y17l.js", import.meta.url).href,
     import.meta.url
   ), { type: "module" });
 }
@@ -6528,7 +6528,6 @@ function useWorker() {
   let _resolveReady;
   const readyPromise = new Promise((resolve) => _resolveReady = resolve);
   validatorWorker.onmessage = (e) => {
-    console.log("✅ Worker message:", e.data);
     if (e.data.ready) {
       console.log("[xml-xsd-validator-browser] Worker is ready ✅");
       _resolveReady(true);
@@ -6558,11 +6557,10 @@ function useWorker() {
     console.log("[xml-xsd-validator-browser] Worker is terminated ✅");
   };
   const validate = async (xmlText, mainSchemaUrl, stopOnFailure = true) => {
-    console.log("before validate by worker");
     const id = crypto.randomUUID();
     return new Promise(async (resolve, reject) => {
       _responses.set(id, { resolve, reject });
-      setTimeout(() => {
+      let timer = setTimeout(() => {
         const response = {
           id,
           status: false,
@@ -6577,15 +6575,15 @@ function useWorker() {
             }
           }]
         };
-        console.error("⚠️ Worker response timeout");
+        console.error("[xml-xsd-validator-browser] Worker response timeout ⚠️ ");
         return reject(response);
       }, 5e3);
       if (await readyPromise) {
+        clearTimeout(timer);
         const payload = {
           id,
           payload: { xmlText, mainSchemaUrl, stopOnFailure }
         };
-        console.log("before post to worker");
         validatorWorker.postMessage(payload);
       }
     });
@@ -6622,7 +6620,6 @@ function test1() {
     <identAndStatusSection></identAndStatusSection>
   </dmodule>`;
   validateXml(xmlText).catch((bags) => {
-    console.log(bags);
     appendToHTML("for_test_1", bags);
   });
 }
@@ -6636,11 +6633,9 @@ async function test2() {
   const { validate, terminate } = useWorker();
   validate(xmlText, mainSchemaUrl).then((response) => {
     const { id, status, bags } = response;
-    console.log(id, status, bags);
     appendToHTML("for_test_2", bags);
   }).catch((response) => {
     const { id, status, bags } = response;
-    console.log(id, status, bags);
     appendToHTML("for_test_2", bags);
     terminate();
   });

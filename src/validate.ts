@@ -1,18 +1,7 @@
 import { validateWellForm } from "./validateFormWell";
 import { UseWorker, ValidationInfo, ValidationPayload, WorkerPayload, WorkerResponse } from "./types/types";
 import { validateXmlTowardXsd } from "./validateTowardXsd";
-// import * as ValidatorWorker from "./worker/validator.worker?worker";
 import ValidatorWorker from "./worker/validator.worker?worker";
-
-
-// validate.ts (your library)
-export async function createValidatorWorker(): Promise<Worker> {
-  // dynamically import the worker if bundler supports it
-  // works for Vite and esbuild
-  const WorkerConstructor = (await import("./worker/validator.worker?worker")).default;
-  return new WorkerConstructor();
-  // return new ValidatorWorker()
-}
 
 /**
  * TBD, akan memvalidate xml berdasarkan namespace
@@ -74,15 +63,13 @@ export function useWorker(): UseWorker {
     { resolve: (res: WorkerResponse) => void; reject: (err?: any) => void }
   >();
 
-  // const validatorWorker = new ValidatorWorker();
-  // let validatorWorker: Worker | null;
   let validatorWorker: Worker = new ValidatorWorker();
 
   let _resolveReady: (v: any) => void;
   const readyPromise = new Promise((resolve) => (_resolveReady = resolve));
 
   validatorWorker!.onmessage = (e: MessageEvent<WorkerResponse>) => {
-    console.log("✅ Worker message:", e.data);
+    // console.log("✅ Worker message:", e.data);
     if (e.data.ready) {
       console.log("[xml-xsd-validator-browser] Worker is ready ✅");
       _resolveReady(true);
@@ -119,12 +106,12 @@ export function useWorker(): UseWorker {
   }
 
   const validate = async (xmlText: string, mainSchemaUrl: string | null, stopOnFailure: boolean = true): Promise<WorkerResponse> => {
-    console.log("before validate by worker");
+    // console.log("before validate by worker");
     const id = crypto.randomUUID();
 
     return new Promise(async (resolve, reject) => {
       _responses.set(id, { resolve, reject });
-      setTimeout(() => {
+      let timer = setTimeout(() => {
         const response = {
           id, status: false, bags: [{
             name: "WorkerResponseTimeout",
@@ -137,15 +124,16 @@ export function useWorker(): UseWorker {
             }
           }]
         };
-        console.error("⚠️ Worker response timeout");
+        console.error("[xml-xsd-validator-browser] Worker response timeout ⚠️ ");
         return reject(response);
       }, 5000);
       if (await readyPromise) {
+        clearTimeout(timer);
         const payload: WorkerPayload<ValidationPayload> = {
           id,
           payload: { xmlText, mainSchemaUrl, stopOnFailure }
         }
-        console.log("before post to worker");
+        // console.log("before post to worker");
         validatorWorker!.postMessage(payload)
       }
     })

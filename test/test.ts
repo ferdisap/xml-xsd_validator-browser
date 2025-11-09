@@ -36,7 +36,7 @@ function test1() {
   </dmodule>`;
   validateXml(xmlText)
     .catch(bags => {
-      console.log(bags) // returning array contains object has name:"XMLValidateError"
+      // console.log(bags) // returning array contains object has name:"XMLValidateError"
       appendToHTML("for_test_1", bags);
     })
 }
@@ -55,12 +55,12 @@ async function test2() {
     // never get resolved if the file is valid
     .then((response:WorkerResponse) => {
       const { id, status, bags } = response;
-      console.log(id, status, bags) 
+      // console.log(id, status, bags) 
       appendToHTML("for_test_2", bags);
     })
     .catch((response:WorkerResponse) => {
       const { id, status, bags } = response;
-      console.log(id, status, bags)
+      // console.log(id, status, bags)
       appendToHTML("for_test_2", bags); // returning array contains object has name:"Fetch Error" because CORS
       terminate()
     })

@@ -25,7 +25,6 @@
     "build": "tsc -p tsconfig.esm.json",
     "build:test": "node build-test.js",
     "vite:build:test": "vite build --config vite.test.config.js",
-    "prepare": "npm run build",
     "docs:md": "typedoc --plugin typedoc-plugin-markdown --out docs/markdown",
     "docs:html": "typedoc --out docs/html",
     "docs": "npm run docs:html && npm run docs:md",

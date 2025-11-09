@@ -6473,7 +6473,6 @@ async function run(xmlText, mainSchemaUrl = null, stopOnFailure = true, duration
     return Promise.reject(bags);
   });
 }
-console.log("[worker] self on message ready");
 self.postMessage({
   ready: true
 });
