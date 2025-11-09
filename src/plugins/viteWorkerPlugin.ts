@@ -1,5 +1,5 @@
 import path from "path";
-import { build } from "esbuild";import { ignoreModuleImportPlugin } from "./esBuildIgnoreModuleImportPlugin";
+import { ignoreModuleImportPlugin } from "./esBuildIgnoreModuleImportPlugin";
 
 /**
  * Opsi plugin untuk membangun worker
@@ -33,7 +33,7 @@ export function viteWorkerPlugin(options: ViteWorkerPluginOptions = {}) {
       const realPath = id.replace(pattern, "");
       const workerFileName = path.basename(realPath).replace(/\.(ts|js)$/, ".js");
       const workerOutFile = path.resolve(outDir, workerFileName);
-
+      const { build } = await import("esbuild");
       await build({
         entryPoints: [realPath],
         outfile: workerOutFile,

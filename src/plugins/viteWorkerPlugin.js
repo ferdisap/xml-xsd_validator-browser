@@ -1,6 +1,5 @@
 // jika pakai vite.test.config.js
 import path from "path";
-import { build } from "esbuild";
 import { ignoreModuleImportPlugin } from "./esBuildIgnoreModuleImportPlugin.js";
 
 /**
@@ -16,8 +15,9 @@ export function workerPlugin() {
       const realPath = id.replace(/\?worker$/, "");
       const workerOutDir = path.resolve("test/build");
       const workerFileName = path.basename(realPath).replace(/\.(ts|js)$/, ".js");
-      const workerOutFile = path.join(workerOutDir, workerFileName);
-
+      const workerOutFile = path.join(workerOutDir, workerFileName);      
+      
+      const { build } = await import("esbuild");
       // 🧩 Bundle worker as standalone ESM
       await build({
         entryPoints: [realPath],

@@ -6505,7 +6505,9 @@ function WorkerWrapper() {
     /* @vite-ignore */
     "" + new URL("assets/validator.worker-BR20y17l.js", import.meta.url).href,
     import.meta.url
-  ), { type: "module" });
+  ), {
+    type: "module"
+  });
 }
 async function validateXml(xmlText, mainSchemaUrl = null, stopOnFailure = true) {
   const errors = [];
@@ -6524,7 +6526,7 @@ async function validateXml(xmlText, mainSchemaUrl = null, stopOnFailure = true) 
 }
 function useWorker() {
   const _responses = /* @__PURE__ */ new Map();
-  let validatorWorker = new WorkerWrapper();
+  let validatorWorker = WorkerWrapper();
   let _resolveReady;
   const readyPromise = new Promise((resolve) => _resolveReady = resolve);
   validatorWorker.onmessage = (e) => {

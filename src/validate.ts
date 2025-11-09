@@ -1,8 +1,12 @@
 import { validateWellForm } from "./validateFormWell";
 import { UseWorker, ValidationInfo, ValidationPayload, WorkerPayload, WorkerResponse } from "./types/types";
 import { validateXmlTowardXsd } from "./validateTowardXsd";
-import ValidatorWorker from "./worker/validator.worker?worker";
 
+function WorkerWrapper() {
+  return new Worker(new URL("./worker/validator.worker.js", import.meta.url), {
+    type: "module",
+  });
+}
 /**
  * TBD, akan memvalidate xml berdasarkan namespace
  * tidak berjalan di worker
@@ -63,7 +67,8 @@ export function useWorker(): UseWorker {
     { resolve: (res: WorkerResponse) => void; reject: (err?: any) => void }
   >();
 
-  let validatorWorker: Worker = new ValidatorWorker();
+  // let validatorWorker: Worker = new ValidatorWorker();
+  let validatorWorker: Worker = WorkerWrapper();
 
   let _resolveReady: (v: any) => void;
   const readyPromise = new Promise((resolve) => (_resolveReady = resolve));
