@@ -1,4 +1,4 @@
-[**xml-xsd-validator-browser v1.0.5**](../README.md)
+[**xml-xsd-validator-browser v1.0.7**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **ValidationInfo** = `object`
 
-Defined in: [types/types.ts:82](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L82)
+Defined in: [types/types.ts:82](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L82)
 
 🔹 Informasi detail tentang satu hasil error atau validasi.
 
@@ -18,7 +18,7 @@ Defined in: [types/types.ts:82](https://github.com/ferdisap/xml-xsd_validator-br
 
 > **name**: [`ErrorName`](ErrorName.md)
 
-Defined in: [types/types.ts:84](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L84)
+Defined in: [types/types.ts:84](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L84)
 
 Nama atau kategori error
 
@@ -28,7 +28,7 @@ Nama atau kategori error
 
 > **type**: [`ValidationType`](ValidationType.md)
 
-Defined in: [types/types.ts:87](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L87)
+Defined in: [types/types.ts:87](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L87)
 
 Jenis validasi yang dilakukan
 
@@ -38,7 +38,7 @@ Jenis validasi yang dilakukan
 
 > **detail**: `object`
 
-Defined in: [types/types.ts:90](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L90)
+Defined in: [types/types.ts:90](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L90)
 
 Detail pesan error dan posisi sumber
 

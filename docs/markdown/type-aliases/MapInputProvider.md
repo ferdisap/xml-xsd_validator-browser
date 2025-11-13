@@ -1,4 +1,4 @@
-[**xml-xsd-validator-browser v1.0.5**](../README.md)
+[**xml-xsd-validator-browser v1.0.7**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **MapInputProvider** = `object`
 
-Defined in: [types/types.ts:153](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L153)
+Defined in: [types/types.ts:153](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L153)
 
 🔹 Input provider untuk proses validasi XML.
 Menyediakan akses virtual terhadap file yang dibaca oleh `libxml2-wasm`.
@@ -19,7 +19,7 @@ Menyediakan akses virtual terhadap file yang dibaca oleh `libxml2-wasm`.
 
 > **match**(`filename`): `boolean`
 
-Defined in: [types/types.ts:159](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L159)
+Defined in: [types/types.ts:159](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L159)
 
 Tentukan apakah provider ini menangani file tertentu.
 
@@ -43,7 +43,7 @@ Nama file yang ingin dicek.
 
 > **open**(`filename`): `number` \| `undefined`
 
-Defined in: [types/types.ts:166](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L166)
+Defined in: [types/types.ts:166](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L166)
 
 Membuka file dan mengembalikan file descriptor.
 
@@ -67,7 +67,7 @@ Nomor descriptor, atau `undefined` jika gagal.
 
 > **read**(`fd`, `buf`): `number`
 
-Defined in: [types/types.ts:174](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L174)
+Defined in: [types/types.ts:174](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L174)
 
 Membaca isi file berdasarkan descriptor.
 
@@ -97,7 +97,7 @@ Jumlah byte yang berhasil dibaca, `-1` jika gagal.
 
 > **close**(`fd`): `boolean`
 
-Defined in: [types/types.ts:181](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L181)
+Defined in: [types/types.ts:181](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L181)
 
 Menutup file descriptor.
 
@@ -121,7 +121,7 @@ File descriptor.
 
 > **register**(): `any`
 
-Defined in: [types/types.ts:186](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L186)
+Defined in: [types/types.ts:186](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L186)
 
 Registrasi provider ini ke dalam sistem libxml2 virtual IO.
 
@@ -135,7 +135,7 @@ Registrasi provider ini ke dalam sistem libxml2 virtual IO.
 
 > **cleanup**(): `void`
 
-Defined in: [types/types.ts:191](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/types/types.ts#L191)
+Defined in: [types/types.ts:191](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/types/types.ts#L191)
 
 Bersihkan provider dari sistem libxml2.
 

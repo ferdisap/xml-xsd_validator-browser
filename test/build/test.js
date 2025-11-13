@@ -6511,17 +6511,9 @@ function WorkerWrapper() {
 }
 async function validateXml(xmlText, mainSchemaUrl = null, stopOnFailure = true) {
   const errors = [];
-  return validateWellForm(xmlText).then((validateWellFormInfos) => {
-    errors.push(...validateWellFormInfos);
-    if (!stopOnFailure || errors.length < 1) {
-      return validateXmlTowardXsd(xmlText, mainSchemaUrl, stopOnFailure).then((validateXmlTowardXsdInfos) => {
-        if (validateXmlTowardXsdInfos) {
-          errors.push(...validateXmlTowardXsdInfos);
-        }
-        return errors;
-      });
-    }
-    return errors;
+  return validateWellForm(xmlText).then(() => validateXmlTowardXsd(xmlText, mainSchemaUrl, stopOnFailure)).then(() => Promise.resolve(errors)).catch((e) => {
+    errors.push(...e);
+    return Promise.reject(errors);
   });
 }
 function useWorker() {

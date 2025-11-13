@@ -1,4 +1,4 @@
-[**xml-xsd-validator-browser v1.0.5**](../README.md)
+[**xml-xsd-validator-browser v1.0.7**](../README.md)
 
 ***
 
@@ -8,7 +8,7 @@
 
 > **getXmlText**(`file`): `Promise`\<`string`\>
 
-Defined in: [util/helper.ts:103](https://github.com/ferdisap/xml-xsd_validator-browser/blob/15013a0b67901b9c2916e2f1f34f83fdae60005f/src/util/helper.ts#L103)
+Defined in: [util/helper.ts:103](https://github.com/ferdisap/xml-xsd_validator-browser/blob/262a5d69532399b9b2c332f3b4b8954db3f6ed4b/src/util/helper.ts#L103)
 
 to get xml text from url.
 
