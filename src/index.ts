@@ -7,7 +7,7 @@ export { createMapInputProvider } from './provider/MapInputProvider';
 export { findRequiredSchemas, extractSchemaLocation, getXmlText, isXmlLike } from './util/helper';
 
 // Jika kamu ingin mengekspor juga fungsionalitas validate secara langsung
-export { validateXml, useWorker } from './validate';
+export { validateXml, useWorker, baseUri } from './validate';
 export { validateWellForm } from "./validateFormWell"
 export { validateXmlTowardXsd } from "./validateTowardXsd"
 

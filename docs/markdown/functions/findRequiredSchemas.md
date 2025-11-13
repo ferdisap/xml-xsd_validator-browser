@@ -8,7 +8,7 @@
 
 > **findRequiredSchemas**(`mainSchemaUrl`, `visited`): `Promise`\<[`Schema`](../type-aliases/Schema.md)[]\>
 
-Defined in: [util/helper.ts:60](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/util/helper.ts#L60)
+Defined in: [util/helper.ts:60](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/util/helper.ts#L60)
 
 ## Parameters
 

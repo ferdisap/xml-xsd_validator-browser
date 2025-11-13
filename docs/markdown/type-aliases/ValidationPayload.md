@@ -8,7 +8,7 @@
 
 > **ValidationPayload** = `object`
 
-Defined in: [types/types.ts:124](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/types/types.ts#L124)
+Defined in: [types/types.ts:124](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/types/types.ts#L124)
 
 🔹 Payload untuk menjalankan validasi XML terhadap XSD.
 
@@ -18,7 +18,7 @@ Defined in: [types/types.ts:124](https://github.com/ferdisap/xml-xsd_validator-b
 
 > `optional` **base**: `string`
 
-Defined in: [types/types.ts:126](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/types/types.ts#L126)
+Defined in: [types/types.ts:126](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/types/types.ts#L126)
 
 base uri
 
@@ -28,7 +28,7 @@ base uri
 
 > **xmlText**: `string`
 
-Defined in: [types/types.ts:129](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/types/types.ts#L129)
+Defined in: [types/types.ts:129](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/types/types.ts#L129)
 
 Teks XML yang akan divalidasi
 
@@ -38,7 +38,7 @@ Teks XML yang akan divalidasi
 
 > `optional` **duration**: `number`
 
-Defined in: [types/types.ts:132](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/types/types.ts#L132)
+Defined in: [types/types.ts:132](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/types/types.ts#L132)
 
 Lama waktu eksekusi (opsional)
 
@@ -48,7 +48,7 @@ Lama waktu eksekusi (opsional)
 
 > `optional` **stopOnFailure**: `boolean`
 
-Defined in: [types/types.ts:135](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/types/types.ts#L135)
+Defined in: [types/types.ts:135](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/types/types.ts#L135)
 
 Jika `true`, hentikan pada error pertama
 
@@ -58,6 +58,6 @@ Jika `true`, hentikan pada error pertama
 
 > `optional` **mainSchemaUrl**: `string` \| `null`
 
-Defined in: [types/types.ts:138](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/types/types.ts#L138)
+Defined in: [types/types.ts:138](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/types/types.ts#L138)
 
 URL XSD utama (opsional)

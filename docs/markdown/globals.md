@@ -35,6 +35,7 @@
 - [extractSchemaLocation](functions/extractSchemaLocation.md)
 - [isXmlLike](functions/isXmlLike.md)
 - [getXmlText](functions/getXmlText.md)
+- [baseUri](functions/baseUri.md)
 - [validateXml](functions/validateXml.md)
 - [useWorker](functions/useWorker.md)
 - [validateWellForm](functions/validateWellForm.md)

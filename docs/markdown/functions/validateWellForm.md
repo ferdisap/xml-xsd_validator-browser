@@ -8,7 +8,7 @@
 
 > **validateWellForm**(`xmlText`): `Promise`\<[`WorkerBags`](../type-aliases/WorkerBags.md)\>
 
-Defined in: [validateFormWell.ts:9](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/validateFormWell.ts#L9)
+Defined in: [validateFormWell.ts:9](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/validateFormWell.ts#L9)
 
 ✅ Validasi XML hanya untuk memastikan well-formed
 - Menggunakan libxml2-wasm (WASM, aman di Worker)

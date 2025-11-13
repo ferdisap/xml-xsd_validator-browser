@@ -8,7 +8,7 @@
 
 > **useWorker**(): [`UseWorker`](../type-aliases/UseWorker.md)
 
-Defined in: [validate.ts:72](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/validate.ts#L72)
+Defined in: [validate.ts:72](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/validate.ts#L72)
 
 ## Returns
 

@@ -8,7 +8,7 @@
 
 > **useLibXml2**(): `object`
 
-Defined in: [libxml/libxmlloader.ts:44](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/libxml/libxmlloader.ts#L44)
+Defined in: [libxml/libxmlloader.ts:44](https://github.com/ferdisap/xml-xsd_validator-browser/blob/97294ff0e0d3eed6a1704787eb3745d48e5b210f/src/libxml/libxmlloader.ts#L44)
 
 ## Returns
 
