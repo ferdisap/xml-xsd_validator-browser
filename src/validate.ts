@@ -2,23 +2,40 @@ import { validateWellForm } from "./validateFormWell";
 import { UseWorker, ValidationInfo, ValidationPayload, WorkerPayload, WorkerResponse } from "./types/types";
 import { validateXmlTowardXsd } from "./validateTowardXsd";
 
+declare global {
+  var uri: string;
+}
+
 function WorkerWrapper() {
   return new Worker(new URL("./worker/validator.worker.js", import.meta.url), {
     type: "module",
   });
 }
+
+self.uri = '';
+/**
+ * set and get base uri
+ */
+export function baseUri(uri: string | null = null): string {
+  if (uri) {
+    self.uri = uri;
+  }
+  try { return window.location.href; }
+  catch (e) { return self.uri; }
+}
+
 /**
  * xsi:schemaLocation may contain two xsd, eg. xsi:schemaLocation="namespace1 xsd1 namespace2 xsd2"
  */
 export async function validateXml(xmlText: string, mainSchemaUrl: string | null = null, stopOnFailure: boolean = true): Promise<ValidationInfo[]> {
   const errors: ValidationInfo[] = [];
   return validateWellForm(xmlText)
-  .then(() =>  validateXmlTowardXsd(xmlText, mainSchemaUrl, stopOnFailure))
-  .then(() => Promise.resolve(errors))
-  .catch(e => {
-    errors.push(...e);
-    return Promise.reject(errors);
-  })
+    .then(() => validateXmlTowardXsd(xmlText, mainSchemaUrl, stopOnFailure))
+    .then(() => Promise.resolve(errors))
+    .catch(e => {
+      errors.push(...e);
+      return Promise.reject(errors);
+    })
 }
 
 // function reactiveStatus(init: string) {
@@ -127,7 +144,7 @@ export function useWorker(): UseWorker {
         clearTimeout(timer);
         const payload: WorkerPayload<ValidationPayload> = {
           id,
-          payload: { xmlText, mainSchemaUrl, stopOnFailure }
+          payload: { xmlText, mainSchemaUrl, stopOnFailure, base: window.location.href }
         }
         // console.log("before post to worker");
         validatorWorker!.postMessage(payload)
@@ -136,6 +153,6 @@ export function useWorker(): UseWorker {
   }
 
   return {
-    validate, terminate
+    validate, terminate,
   }
 }

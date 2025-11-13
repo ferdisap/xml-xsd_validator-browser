@@ -6263,6 +6263,12 @@ function mergeByBasenameKeepFullPath(existingArr, newItems) {
   return Object.values(map);
 }
 async function findRequiredSchemas(mainSchemaUrl, visited = /* @__PURE__ */ new Set()) {
+  try {
+    mainSchemaUrl = new URL(mainSchemaUrl, baseUri(null)).href;
+  } catch (err) {
+    console.error("schema-url-not-well-formed:", err);
+    return Promise.reject([]);
+  }
   if (visited.has(mainSchemaUrl)) {
     return Promise.resolve([]);
   }
@@ -6273,7 +6279,7 @@ async function findRequiredSchemas(mainSchemaUrl, visited = /* @__PURE__ */ new 
   }).then(async (text) => {
     const regex = /<[a-zA-Z]{2}:(?:import|include|redefine)[^>]*schemaLocation="([^"]+)"/g;
     const matches = Array.from(text.matchAll(regex));
-    const base = new URL(mainSchemaUrl);
+    const base = new URL(mainSchemaUrl, baseUri(null));
     const nestedUrls = [];
     for (const match of matches) {
       try {
@@ -6416,9 +6422,27 @@ async function validateXmlTowardXsd(file, mainSchemaUrl = null, stopOnFailure = 
   }
   const mainXsdText = schemas[0].contents;
   let xmlDoc;
-  let xsdDoc;
   try {
     xmlDoc = libxml3().XmlDocument.fromString(xmlText);
+  } catch (error2) {
+    console.warn("Warning: XML and XSD Document fail to parsed");
+    bags.push({
+      name: "XMLParseError",
+      type: "xsd",
+      detail: {
+        message: "Failed to create instance of Xml document",
+        col: 1,
+        line: 1,
+        file: ""
+      }
+    });
+    if (stopOnFailure) {
+      provider?.cleanup();
+      return Promise.reject(bags);
+    }
+  }
+  let xsdDoc;
+  try {
     xsdDoc = libxml3().XmlDocument.fromString(mainXsdText);
   } catch (error2) {
     console.warn("Warning: XML and XSD Document fail to parsed");
@@ -6426,7 +6450,7 @@ async function validateXmlTowardXsd(file, mainSchemaUrl = null, stopOnFailure = 
       name: "XMLParseError",
       type: "xsd",
       detail: {
-        message: "Failed to create instance of Xml and Xsd document",
+        message: "Failed to create instance of Xsd document",
         col: 1,
         line: 1,
         file: ""
@@ -6480,6 +6504,17 @@ async function validateXmlTowardXsd(file, mainSchemaUrl = null, stopOnFailure = 
   provider?.cleanup();
   return Promise.reject(bags);
 }
+self.uri = "";
+function baseUri(uri = null) {
+  if (uri) {
+    self.uri = uri;
+  }
+  try {
+    return window.location.href;
+  } catch (e) {
+    return self.uri;
+  }
+}
 async function validating(xmlText, mainSchemaUrl = null, stopOnFailure = true) {
   return Promise.all([
     validateWellForm(xmlText),
@@ -6514,7 +6549,8 @@ self.postMessage({
 });
 self.onmessage = (e) => {
   const { id, payload } = e.data;
-  const { xmlText, mainSchemaUrl, stopOnFailure, duration } = payload;
+  const { xmlText, mainSchemaUrl, stopOnFailure, duration, base } = payload;
+  if (base) baseUri(base);
   const errorBags = [];
   run(xmlText, mainSchemaUrl, stopOnFailure, duration).then((i) => {
     errorBags.push(...i);

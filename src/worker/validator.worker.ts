@@ -1,4 +1,5 @@
 import { ValidationPayload, ValidationResponse, WorkerBags, WorkerPayload, WorkerResponse } from "../types/types";
+import { baseUri } from "../validate";
 import { validateWellForm } from "../validateFormWell";
 import { validateXmlTowardXsd } from "../validateTowardXsd";
 
@@ -44,7 +45,9 @@ self.postMessage({
 });
 self.onmessage = (e: MessageEvent<WorkerPayload<ValidationPayload>>) => {
   const { id, payload } = e.data;
-  const { xmlText, mainSchemaUrl, stopOnFailure, duration } = payload;
+  const { xmlText, mainSchemaUrl, stopOnFailure, duration, base } = payload;
+
+  if(base) baseUri(base);
 
   const errorBags: WorkerBags = [];
   run(xmlText, mainSchemaUrl, stopOnFailure, duration)

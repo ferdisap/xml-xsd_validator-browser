@@ -1,4 +1,4 @@
-[**xml-xsd-validator-browser v1.0.8**](../README.md)
+[**xml-xsd-validator-browser v1.0.9**](../README.md)
 
 ***
 
@@ -6,7 +6,7 @@
 
 # Interface: ViteWorkerPluginOptions
 
-Defined in: [plugins/viteWorkerPlugin.ts:7](https://github.com/ferdisap/xml-xsd_validator-browser/blob/07eaefd3e0674318da2bdecf930261d4f09af76b/src/plugins/viteWorkerPlugin.ts#L7)
+Defined in: [plugins/viteWorkerPlugin.ts:7](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/plugins/viteWorkerPlugin.ts#L7)
 
 Opsi plugin untuk membangun worker
 
@@ -16,7 +16,7 @@ Opsi plugin untuk membangun worker
 
 > `optional` **outDir**: `string`
 
-Defined in: [plugins/viteWorkerPlugin.ts:9](https://github.com/ferdisap/xml-xsd_validator-browser/blob/07eaefd3e0674318da2bdecf930261d4f09af76b/src/plugins/viteWorkerPlugin.ts#L9)
+Defined in: [plugins/viteWorkerPlugin.ts:9](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/plugins/viteWorkerPlugin.ts#L9)
 
 Folder keluaran worker (default: "dist")
 
@@ -26,7 +26,7 @@ Folder keluaran worker (default: "dist")
 
 > `optional` **pattern**: `RegExp`
 
-Defined in: [plugins/viteWorkerPlugin.ts:11](https://github.com/ferdisap/xml-xsd_validator-browser/blob/07eaefd3e0674318da2bdecf930261d4f09af76b/src/plugins/viteWorkerPlugin.ts#L11)
+Defined in: [plugins/viteWorkerPlugin.ts:11](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/plugins/viteWorkerPlugin.ts#L11)
 
 Pola pencocokan import (default: /\?worker$/)
 
@@ -36,6 +36,6 @@ Pola pencocokan import (default: /\?worker$/)
 
 > `optional` **minify**: `boolean`
 
-Defined in: [plugins/viteWorkerPlugin.ts:13](https://github.com/ferdisap/xml-xsd_validator-browser/blob/07eaefd3e0674318da2bdecf930261d4f09af76b/src/plugins/viteWorkerPlugin.ts#L13)
+Defined in: [plugins/viteWorkerPlugin.ts:13](https://github.com/ferdisap/xml-xsd_validator-browser/blob/f546e7f8db997c60245e28b1fc8e1492efc7c262/src/plugins/viteWorkerPlugin.ts#L13)
 
 Apakah worker perlu di-minify (default: false)

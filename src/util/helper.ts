@@ -55,11 +55,18 @@ export function mergeByBasenameKeepFullPath(
  */
 
 import { Schema } from "../types/types";
+import { baseUri } from "../validate";
 
 export async function findRequiredSchemas(
   mainSchemaUrl: string,
   visited = new Set<string>()
 ): Promise<Schema[]> {
+  try {
+    mainSchemaUrl = new URL(mainSchemaUrl, baseUri(null)).href;
+  } catch(err) {
+    console.error("schema-url-not-well-formed:", err);
+    return Promise.reject([]);
+  }
   if (visited.has(mainSchemaUrl)) {
     return Promise.resolve([]);
   }
@@ -72,8 +79,8 @@ export async function findRequiredSchemas(
     .then(async (text) => {
       const regex = /<[a-zA-Z]{2}:(?:import|include|redefine)[^>]*schemaLocation="([^"]+)"/g;
       const matches = Array.from(text.matchAll(regex));
-      const base = new URL(mainSchemaUrl);
-
+      const base = new URL(mainSchemaUrl, baseUri(null));
+      
       const nestedUrls: string[] = [];
       for (const match of matches) {
         try {

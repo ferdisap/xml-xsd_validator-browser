@@ -122,6 +122,9 @@ export type PayloadId = string;
  * 🔹 Payload untuk menjalankan validasi XML terhadap XSD.
  */
 export type ValidationPayload = {
+  /** base uri */
+  base?:string;
+  
   /** Teks XML yang akan divalidasi */
   xmlText: string;
 

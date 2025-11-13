@@ -1,6 +1,6 @@
 {
   "name": "xml-xsd-validator-browser",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "To validate XML file by the XSD. Able to nested XSD by xs:include, xs:redefine, and xs:import which have different namespace. Now it is able to run in web worker and better user experience. It has been tested in dev and build package. It also able to use multiple schemaLocation.",
   "type": "module",
   "main": "./dist/esm/index.js",

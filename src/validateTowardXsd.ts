@@ -105,9 +105,28 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
   // 4) load XML & main XSD doc (main xsd still parsed from string)
   const mainXsdText = schemas![0].contents;
   let xmlDoc: any;
-  let xsdDoc: any;
   try {
     xmlDoc = libxml().XmlDocument.fromString(xmlText!);
+  } catch (error) {
+    console.warn("Warning: XML and XSD Document fail to parsed");
+    bags.push({
+      name: "XMLParseError",
+      type: "xsd",
+      detail: {
+        message: "Failed to create instance of Xml document",
+        col: 1,
+        line: 1,
+        file: ""
+      }
+    })
+    if (stopOnFailure) {
+      provider?.cleanup();
+      return Promise.reject(bags);
+    }
+  }
+  
+  let xsdDoc: any;
+  try {
     xsdDoc = libxml().XmlDocument.fromString(mainXsdText);
   } catch (error) {
     console.warn("Warning: XML and XSD Document fail to parsed");
@@ -115,7 +134,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
       name: "XMLParseError",
       type: "xsd",
       detail: {
-        message: "Failed to create instance of Xml and Xsd document",
+        message: "Failed to create instance of Xsd document",
         col: 1,
         line: 1,
         file: ""
