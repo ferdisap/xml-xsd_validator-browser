@@ -251,7 +251,8 @@ export interface IValidateEntityNotationOption {
   notations?: {
     // allowedNotation?: () => Promise<ParsedNotation[]>; // url
     allowedNotation?: ParsedNotation[] | null; // url
-    name: boolean;
-    publicId: boolean;
+    name?: boolean;
+    publicId?: boolean;
+    systemId?: boolean;
   }
 }

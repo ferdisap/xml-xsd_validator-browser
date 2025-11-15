@@ -297,6 +297,32 @@ async function validate(data: EntityNotation, stopOnFailure:boolean) :Promise<Wo
           if(stopOnFailure) return bags.length ? Promise.reject(bags) : Promise.resolve(bags);
         }
       }
+      // validate notation systemId
+      if (option.notations.systemId) {
+        // check name nya dahulu
+        if (allowedNotation && allowedNotation!.find(n => n.name === notation.name)) {
+          // jika allowedNotation tidak ada nama dan public id yang sama dengan data.notation.systemId/name maka error
+          if (notation.systemId && !(allowedNotation!.find(n => n.systemId === notation.systemId))) {
+            bags.push({
+              "name": "NotationNotValid",
+              "type": "dtd",
+              "detail": {
+                "message": `Notation ${notation.name} with public id ${notation.systemId} is not available`,
+                "file": "",
+                "line": 1,
+                "col": 1,
+              }
+            })
+            if(stopOnFailure) return bags.length ? Promise.reject(bags) : Promise.resolve(bags);
+          }
+        }
+        // validate name
+        let isnv: ValidationInfo | void;
+        if (isnv = isNotValidName(notation.systemId, true)) {
+          bags.push(isnv)
+          if(stopOnFailure) return bags.length ? Promise.reject(bags) : Promise.resolve(bags);
+        }
+      }
       // validate notation name
       if (option.notations.name) {
         // jika allowedNotation tidak ada nama yang sesuai dengan data.notation.name maka error
