@@ -307,7 +307,7 @@ async function validate(data: EntityNotation, stopOnFailure:boolean) :Promise<Wo
               "name": "NotationNotValid",
               "type": "dtd",
               "detail": {
-                "message": `Notation ${notation.name} with public id ${notation.systemId} is not available`,
+                "message": `Notation ${notation.name} with system id ${notation.systemId} is not available`,
                 "file": "",
                 "line": 1,
                 "col": 1,
