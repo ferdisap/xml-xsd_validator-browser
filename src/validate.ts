@@ -7,8 +7,13 @@ import { notationXmlToObject, validateEntityNotation } from "./validateDtd.js";
 
 // top.libxml2 = libxml2
 
+if (typeof globalThis.Worker === 'undefined') {
+  const {Worker} = await import('@apacheli/web-workers');
+  globalThis.Worker = Worker;
+}
+
 declare global {
-  var uri: string;
+  var uri: string|undefined;
   var Option_XmlDocumentParse: number;
   var Option_XmlEntityNotation: IValidateEntityNotationOption
 }
@@ -64,7 +69,7 @@ export const defaultEntityNotationValidationOption: IValidateEntityNotationOptio
   }
 }
 
-globalThis.uri = '';
+globalThis.uri = undefined;
 globalThis.Option_XmlDocumentParse = ParseOption.XML_PARSE_DEFAULT;
 globalThis.Option_XmlEntityNotation = defaultEntityNotationValidationOption;
 
@@ -78,7 +83,7 @@ function WorkerWrapper() {
  * @params uri -> set base uri if any.
  * @return always return to window href if exist or nullish string
  */
-export function baseUri(uri: string | null = null): string {
+export function baseUri(uri: string | null = null): string|undefined {
   if (uri) {
     globalThis.uri = uri;
   }

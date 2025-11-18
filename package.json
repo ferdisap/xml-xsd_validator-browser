@@ -49,6 +49,7 @@
   },
   "homepage": "https://github.com/ferdisap/xml-xsd_validator-browser#readme",
   "dependencies": {
+    "@apacheli/web-workers": "^2.0.0",
     "libxml2-wasm": "0.6.0"
   },
   "devDependencies": {

@@ -2,7 +2,7 @@
 
 # 🧩 xml-xsd-validator-browser
 
-A lightweight **XML validator in the browser** using [`libxml2-wasm`](https://github.com/jameslan/libxml2-wasm) with support for **recursive XSD imports/includes/redefines** via a `MapInputProvider`.
+A lightweight **XML validator for use in the browser or Node** using [`libxml2-wasm`](https://github.com/jameslan/libxml2-wasm) with support for **recursive XSD imports/includes/redefines** via a `MapInputProvider`.
 
 This library allows you to validate XML files against complex XSD schemas that reference multiple nested schemas, **without requiring network requests during validation**.
 
