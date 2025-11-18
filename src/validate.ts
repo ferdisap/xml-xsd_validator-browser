@@ -19,7 +19,7 @@ declare global {
  * @returns
  */
 export function XmlDocumentParseOption(opt: number | null = null) {
-  return typeof opt === 'number' ? ((self.Option_XmlDocumentParse = opt) as number) : self.Option_XmlDocumentParse;
+  return typeof opt === 'number' ? ((globalThis.Option_XmlDocumentParse = opt) as number) : globalThis.Option_XmlDocumentParse;
 }
 
 /**
@@ -28,7 +28,7 @@ export function XmlDocumentParseOption(opt: number | null = null) {
  * @returns
  */
 export function XmlEntityNotationOption(opt: IValidateEntityNotationOption | null = null) {
-  return opt ? (self.Option_XmlEntityNotation = opt) : self.Option_XmlEntityNotation;
+  return opt ? (globalThis.Option_XmlEntityNotation = opt) : globalThis.Option_XmlEntityNotation;
 }
 
 export const S1000dDocParseOption = ParseOption.XML_PARSE_DTDLOAD | // Load external DTD
@@ -64,9 +64,9 @@ export const defaultEntityNotationValidationOption: IValidateEntityNotationOptio
   }
 }
 
-self.uri = '';
-self.Option_XmlDocumentParse = ParseOption.XML_PARSE_DEFAULT;
-self.Option_XmlEntityNotation = defaultEntityNotationValidationOption;
+globalThis.uri = '';
+globalThis.Option_XmlDocumentParse = ParseOption.XML_PARSE_DEFAULT;
+globalThis.Option_XmlEntityNotation = defaultEntityNotationValidationOption;
 
 function WorkerWrapper() {
   return new Worker(new URL("./worker/validator.worker.js", import.meta.url), {
@@ -80,10 +80,10 @@ function WorkerWrapper() {
  */
 export function baseUri(uri: string | null = null): string {
   if (uri) {
-    self.uri = uri;
+    globalThis.uri = uri;
   }
   try { return window.location.href; }
-  catch (e) { return self.uri; }
+  catch (e) { return globalThis.uri; }
 }
 
 /**
