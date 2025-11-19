@@ -200,7 +200,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
   // 6) cleanup
   provider?.cleanup();
 
-  return Promise.reject(bags)
+  return bags;
 }
 
 // ####
