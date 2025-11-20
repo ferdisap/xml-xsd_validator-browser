@@ -29,22 +29,11 @@ npm i xml-xsd-validator-browser
 
 ## 🧰 Usage Example
 
-1. clone this repository.
-2. run `` npm install && npm run vite:build:test ``
-3. open the ``index.html``
-
-### or you use this code below
-
 ```ts
-import { extractSchemaLocation, getXmlText } from "../src/util/helper";
-import { useWorker, validateXml } from "../src/validate";
-
-// if use xml file url
-// const fileurl = "/test/xml_file.xml";
-// const xmlText = await getXmlText(fileurl);
+import { useWorker, validateXml } from "xml-xsd-validator-browser";
 
 function test1() {
-  const xmlText = 
+  const xmlText =
   `<?xml version="1.0" encoding="UTF-8"?>
   <!DOCTYPE dmodule >
   <dmodule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dc="http://www.purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xsi:noNamespaceSchemaLocation="https://ferdisap.github.io/schema/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd"><identAndStatusSection></identAndStatusSection></dmodule>`;
@@ -56,7 +45,7 @@ function test1() {
 test1()
 
 async function test2() {
-  const xmlText = 
+  const xmlText =
   `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE dmodule >
   <dmodule>
     <identAndStatusSection></identAndStatusSection>
@@ -105,3 +94,9 @@ test2()
 */
 
 ```
+
+## Local development
+
+1. clone this repository.
+2. run `` npm install && npm run vite:build:test ``
+3. open the ``index.html``

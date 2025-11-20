@@ -42,7 +42,7 @@ function test1() {
   // <dmodule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   //   xmlns:dc="http://www.purl.org/dc/elements/1.1/"
   //   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  //   xmlns:xlink="http://www.w3.org/1999/xlink" 
+  //   xmlns:xlink="http://www.w3.org/1999/xlink"
   //   xsi:noNamespaceSchemaLocation="http://localhost:5174/s1000d/S1000D_5-0/xml_schema_flat/appliccrossreftable.xsd">
   //   <identAndStatusSection></identAndStatusSection>
   // </dmodule>`;
@@ -96,7 +96,7 @@ async function test2() {
     // never get resolved if the file is valid
     .then((response: WorkerResponse) => {
       const { id, status, bags } = response;
-      // console.log(id, status, bags) 
+      // console.log(id, status, bags)
       appendToHTML("for_test_2", bags);
     })
     .catch((response: WorkerResponse) => {

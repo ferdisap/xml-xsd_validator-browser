@@ -1,6 +1,6 @@
 import { build } from "esbuild";
 import path from "path";
-import { ignoreModuleImportPlugin } from "./src/plugins/ignoreModuleImportPlugin.js";
+import { ignoreModuleImportPlugin } from "./src/plugins/esBuildIgnoreModuleImportPlugin.js";
 import { workerPlugin } from "./src/plugins/viteWorkerPlugin.js";
 
 const config = {

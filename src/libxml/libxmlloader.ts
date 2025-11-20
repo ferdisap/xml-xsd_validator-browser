@@ -1,5 +1,5 @@
-import { ValidationInfo } from "../types/types";
-import { init_lib } from "./libxml2-wasm-wrapper";
+import { ValidationInfo } from "../types/types.js";
+import { init_lib } from "./libxml2-wasm-wrapper.js";
 import * as libxml2 from "libxml2-wasm";
 
 type LibLoader = {
@@ -9,7 +9,7 @@ type LibLoader = {
 
 /**
  * @deprecated
- * @returns 
+ * @returns
  */
 export const loader: LibLoader = {
   libxml: null as any,
@@ -18,7 +18,7 @@ export const loader: LibLoader = {
 
 /**
  * @deprecated
- * @returns 
+ * @returns
  */
 export function libxml() {
   return loader.libxml
@@ -26,7 +26,7 @@ export function libxml() {
 
 /**
  * @deprecated
- * @returns 
+ * @returns
  */
 export async function ensureLibxml2Loaded() {
   return new Promise(async (resolve, reject) => {
@@ -55,7 +55,7 @@ export async function ensureLibxml2Loaded() {
 
 /**
  * @deprecated
- * @returns 
+ * @returns
  */
 export function useLibXml2() {
   return {

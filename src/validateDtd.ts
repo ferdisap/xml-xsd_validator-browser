@@ -1,9 +1,9 @@
 // ------------------------------------
 // Type declarations
 
-import { DtdInfo, EntityNotation, ErrorName, IValidateEntityNotationOption, ParsedEntity, ParsedNotation, ValidationInfo, WorkerBags } from "./types/types";
-import { findRequiredDtds, isXmlLike } from "./util/helper";
-import { baseUri, XmlEntityNotationOption } from "./validate";
+import { DtdInfo, EntityNotation, ErrorName, IValidateEntityNotationOption, ParsedEntity, ParsedNotation, ValidationInfo, WorkerBags } from "./types/types.js";
+import { findRequiredDtds, isXmlLike } from "./util/helper.js";
+import { baseUri, XmlEntityNotationOption } from "./validate.js";
 
 // ------------------------------------
 // FUNCTION 1: findRequiredDtds

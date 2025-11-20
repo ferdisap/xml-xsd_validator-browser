@@ -1,8 +1,8 @@
-import { validateWellForm } from "./validateFormWell";
-import { IValidateEntityNotationOption, UseWorker, ValidationInfo, ValidationPayload, WorkerPayload, WorkerResponse } from "./types/types";
-import { validateXmlTowardXsd } from "./validateTowardXsd";
+import { validateWellForm } from "./validateFormWell.js";
+import { IValidateEntityNotationOption, UseWorker, ValidationInfo, ValidationPayload, WorkerPayload, WorkerResponse } from "./types/types.js";
+import { validateXmlTowardXsd } from "./validateTowardXsd.js";
 import { ParseOption } from "libxml2-wasm";
-import { notationXmlToObject, validateEntityNotation } from "./validateDtd";
+import { notationXmlToObject, validateEntityNotation } from "./validateDtd.js";
 // import * as libxml2 from "libxml2-wasm";
 
 // top.libxml2 = libxml2
@@ -15,20 +15,20 @@ declare global {
 
 /**
  * get and set base xml document parse option
- * @param opt 
- * @returns 
+ * @param opt
+ * @returns
  */
 export function XmlDocumentParseOption(opt: number | null = null) {
-  return typeof opt === 'number' ? ((self.Option_XmlDocumentParse = opt) as number) : self.Option_XmlDocumentParse;
+  return typeof opt === 'number' ? ((globalThis.Option_XmlDocumentParse = opt) as number) : globalThis.Option_XmlDocumentParse;
 }
 
 /**
  * get and set base xml entity notation validation option
- * @param opt 
- * @returns 
+ * @param opt
+ * @returns
  */
 export function XmlEntityNotationOption(opt: IValidateEntityNotationOption | null = null) {
-  return opt ? (self.Option_XmlEntityNotation = opt) : self.Option_XmlEntityNotation;
+  return opt ? (globalThis.Option_XmlEntityNotation = opt) : globalThis.Option_XmlEntityNotation;
 }
 
 export const S1000dDocParseOption = ParseOption.XML_PARSE_DTDLOAD | // Load external DTD
@@ -39,8 +39,8 @@ export const S1000dAllowedNotationUrl = "https://ferdisap.github.io/schema/s1000
 
 /**
  * get S1000D allowed notation
- * @param opt 
- * @returns 
+ * @param opt
+ * @returns
  */
 export async function getS1000dAllowedNotation(){
   return notationXmlToObject(S1000dAllowedNotationUrl);
@@ -48,7 +48,7 @@ export async function getS1000dAllowedNotation(){
 
 /**
  * get S1000d document parse option
- * @returns 
+ * @returns
  */
 export function getS1000dDocParseOption(){
   return S1000dDocParseOption;
@@ -64,9 +64,9 @@ export const defaultEntityNotationValidationOption: IValidateEntityNotationOptio
   }
 }
 
-self.uri = '';
-self.Option_XmlDocumentParse = ParseOption.XML_PARSE_DEFAULT;
-self.Option_XmlEntityNotation = defaultEntityNotationValidationOption;
+globalThis.uri = '';
+globalThis.Option_XmlDocumentParse = ParseOption.XML_PARSE_DEFAULT;
+globalThis.Option_XmlEntityNotation = defaultEntityNotationValidationOption;
 
 function WorkerWrapper() {
   return new Worker(new URL("./worker/validator.worker.js", import.meta.url), {
@@ -75,15 +75,15 @@ function WorkerWrapper() {
 }
 /**
  * set and get base uri
- * @params uri -> set base uri if any. 
+ * @params uri -> set base uri if any.
  * @return always return to window href if exist or nullish string
  */
 export function baseUri(uri: string | null = null): string {
   if (uri) {
-    self.uri = uri;
+    globalThis.uri = uri;
   }
   try { return window.location.href; }
-  catch (e) { return self.uri; }
+  catch (e) { return globalThis.uri; }
 }
 
 /**

@@ -1,5 +1,5 @@
 import path from "path";
-import { ignoreModuleImportPlugin } from "./esBuildIgnoreModuleImportPlugin";
+import { ignoreModuleImportPlugin } from "./esBuildIgnoreModuleImportPlugin.js";
 
 /**
  * Opsi plugin untuk membangun worker
@@ -50,9 +50,9 @@ export function viteWorkerPlugin(options: ViteWorkerPluginOptions = {}) {
       return {
         code: `
           export default function WorkerWrapper(options) {
-            return new Worker(new URL("./${workerFileName}", import.meta.url), { 
-              type: "module", 
-              name: options?.name 
+            return new Worker(new URL("./${workerFileName}", import.meta.url), {
+              type: "module",
+              name: options?.name
             });
           }
         `,
