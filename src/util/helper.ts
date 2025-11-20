@@ -1,6 +1,6 @@
 import { ParseOption } from "libxml2-wasm";
-import { DtdLocation, IValidateEntityNotationOption, ParsedNotation, Schema } from "../types/types";
-import { baseUri } from "../validate";
+import { DtdLocation, IValidateEntityNotationOption, ParsedNotation, Schema } from "../types/types.js";
+import { baseUri } from "../validate.js";
 
 /**
  * Gabungkan array `Schema` berdasarkan nama file (basename).
@@ -52,7 +52,7 @@ export function mergeByBasenameKeepFullPath(
 /**
  * Rekursif mendeteksi semua dependency XSD dari schema utama,
  * handle xs:import, xs:include, dan xs:redefine
- * 
+ *
  * Tidak menggunakan async/await, seluruhnya Promise chaining.
  * Menangani error dengan console.error, tetap resolve agar tidak menghentikan chain.
  * array index 0 adalah mainSchemaUrl
@@ -147,7 +147,7 @@ export function detectSchemaLocation(xmlText: string): Schema[] {
 /**
  * to check wheter the param is xml text or url
  * @param file url or xml text file
- * @returns 
+ * @returns
  */
 export function isXmlLike(file: string): boolean {
   if (typeof file !== 'string') {
@@ -160,8 +160,8 @@ export function isXmlLike(file: string): boolean {
 
 /**
  * resolve relative uri to base uri jika
- * @param uri 
- * @returns 
+ * @param uri
+ * @returns
  */
 export function resolveUriToBase(uri: string) {
   return (new URL(uri, baseUri(null))).href;

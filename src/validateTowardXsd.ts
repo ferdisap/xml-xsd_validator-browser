@@ -1,15 +1,15 @@
-import { createMapInputProvider } from "./provider/MapInputProvider";
-import { MapInputProvider, Schema, WorkerBags } from "./types/types";
-import { detectSchemaLocation, findRequiredSchemas, getSchemaText, mergeByBasenameKeepFullPath } from "./util/helper";
-import { useLibXml2 } from "./libxml/libxmlloader";
-import { XmlDocumentParseOption } from "./validate";
+import { createMapInputProvider } from "./provider/MapInputProvider.js";
+import { MapInputProvider, Schema, WorkerBags } from "./types/types.js";
+import { detectSchemaLocation, findRequiredSchemas, getSchemaText, mergeByBasenameKeepFullPath } from "./util/helper.js";
+import { useLibXml2 } from "./libxml/libxmlloader.js";
+import { XmlDocumentParseOption } from "./validate.js";
 import { XmlDocument, XsdValidator } from "libxml2-wasm";
 
 /**
  * logic validate xml toward xsd.
  * @param file url or xml contents
  * @param mainSchemaUrl url
- * @returns 
+ * @returns
  */
 
 export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string | null = null, stopOnFailure: boolean = true): Promise<WorkerBags> {
@@ -131,7 +131,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
       return Promise.reject(bags);
     }
   }
-  
+
   let xsdDoc: any;
   try {
     xsdDoc = XmlDocument.fromString(mainXsdText);
@@ -200,7 +200,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
   // 6) cleanup
   provider?.cleanup();
 
-  return Promise.reject(bags)
+  return bags;
 }
 
 // ####
@@ -327,7 +327,7 @@ export async function validateXmlTowardXsd(file: string, mainSchemaUrl: string |
 //       return Promise.reject(bags);
 //     }
 //   }
-  
+
 //   let xsdDoc: any;
 //   try {
 //     xsdDoc = libxml().XmlDocument.fromString(mainXsdText);

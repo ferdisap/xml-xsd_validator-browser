@@ -1,7 +1,7 @@
 import { XmlDocument, XmlLibError } from "libxml2-wasm";
-import { useLibXml2 } from "./libxml/libxmlloader";
-import { WorkerBags } from "./types/types";
-import { XmlDocumentParseOption } from "./validate";
+import { useLibXml2 } from "./libxml/libxmlloader.js";
+import { WorkerBags } from "./types/types.js";
+import { XmlDocumentParseOption } from "./validate.js";
 /**
  * ✅ Validasi XML hanya untuk memastikan well-formed
  * - Menggunakan libxml2-wasm (WASM, aman di Worker)

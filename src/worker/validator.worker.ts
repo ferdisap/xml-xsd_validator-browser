@@ -1,8 +1,8 @@
-import { IValidateEntityNotationOption, ValidationPayload, ValidationResponse, WorkerBags, WorkerPayload, WorkerResponse } from "../types/types";
-import { baseUri, XmlDocumentParseOption, XmlEntityNotationOption } from "../validate";
-import { validateEntityNotation } from "../validateDtd";
-import { validateWellForm } from "../validateFormWell";
-import { validateXmlTowardXsd } from "../validateTowardXsd";
+import { IValidateEntityNotationOption, ValidationPayload, ValidationResponse, WorkerBags, WorkerPayload, WorkerResponse } from "../types/types.js";
+import { baseUri, XmlDocumentParseOption, XmlEntityNotationOption } from "../validate.js";
+import { validateEntityNotation } from "../validateDtd.js";
+import { validateWellForm } from "../validateFormWell.js";
+import { validateXmlTowardXsd } from "../validateTowardXsd.js";
 
 async function validating(xmlText: string, mainSchemaUrl: string | null = null, stopOnFailure: boolean = true) {
   return Promise.all([
@@ -41,11 +41,11 @@ async function run(xmlText: string, mainSchemaUrl: string | null = null, stopOnF
     })
 }
 
-// console.log('[worker] self on message ready');
-self.postMessage({
+// console.log('[worker] globalThis on message ready');
+globalThis.postMessage({
   ready: true
 });
-self.onmessage = (e: MessageEvent<WorkerPayload<ValidationPayload>>) => {
+globalThis.onmessage = (e: MessageEvent<WorkerPayload<ValidationPayload>>) => {
   const { id, payload } = e.data;
 
   // console.log('aaa fufuafa', payload.onBefore);
@@ -55,7 +55,7 @@ self.onmessage = (e: MessageEvent<WorkerPayload<ValidationPayload>>) => {
     }
     if(payload.onBefore.set_xml_entity_notation_option){
       XmlEntityNotationOption(payload.onBefore.set_xml_entity_notation_option as IValidateEntityNotationOption);
-      // console.log('bbb', self.Option_XmlEntityNotation.notations?.allowedNotation)
+      // console.log('bbb', globalThis.Option_XmlEntityNotation.notations?.allowedNotation)
     }
     if(payload.onBefore.base){
       baseUri(payload.onBefore.base);
@@ -74,7 +74,7 @@ self.onmessage = (e: MessageEvent<WorkerPayload<ValidationPayload>>) => {
         status: true,
         bags: errorBags,
       }
-      self.postMessage(response);
+      globalThis.postMessage(response);
     })
     .catch(e => {
       errorBags.push(...e);
@@ -83,6 +83,6 @@ self.onmessage = (e: MessageEvent<WorkerPayload<ValidationPayload>>) => {
         status: false,
         bags: errorBags,
       }
-      self.postMessage(response)
+      globalThis.postMessage(response)
     })
 }

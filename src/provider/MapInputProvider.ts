@@ -1,6 +1,6 @@
 import { xmlCleanupInputProvider, xmlRegisterInputProvider } from "libxml2-wasm";
-import { useLibXml2 } from "../libxml/libxmlloader";
-import { MapInputProvider, Schema } from "../types/types";
+import { useLibXml2 } from "../libxml/libxmlloader.js";
+import { MapInputProvider, Schema } from "../types/types.js";
 
 /**
  * Create a virtual file provider for libxml2-wasm.
